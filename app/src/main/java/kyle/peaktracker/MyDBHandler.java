@@ -17,7 +17,7 @@ import java.io.OutputStream;
 
 public class MyDBHandler extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "peaks.db";
     //private static final String DATABASE_PATH = "/app/src/main/assests/Database/";
     //private static final String DATABASE_PATH = "/data/data/kyle.peaktracker/databases/";
@@ -39,7 +39,9 @@ public class MyDBHandler extends SQLiteOpenHelper {
     public MyDBHandler(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.myContext = context;
-        DATABASE_PATH = myContext.getDatabasePath(DATABASE_NAME).toString();
+        //DATABASE_PATH = myContext.getApplicationInfo().dataDir + "/databases/";
+        DATABASE_PATH = myContext.getDatabasePath(DATABASE_NAME).getPath();
+        Log.v("DATABASE PATH: " + DATABASE_PATH, "");
     }
 
     public void createDatabase() throws IOException
@@ -60,6 +62,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
             try
             {
                 this.close();
+                Log.e("copyDatabase", "");
                 copyDataBase();
             }
             catch (IOException e)
