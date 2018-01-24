@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import java.text.DecimalFormat;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -15,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
     Button NE115;
     Button ADK46;
     Button NH48;
+
+    DecimalFormat df = new DecimalFormat("#.##");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +33,9 @@ public class MainActivity extends AppCompatActivity {
         //NE115 Setting Display
         double perc_completed = 0.0; //initial value does not matter
         access.open();
-        access.calculate_completion("adk_peaks");
+        perc_completed = access.calculate_completion("adk_peaks");
 
-        NE115.setText("NE115: " + perc_completed);
+        ADK46.setText("ADK46: " + df.format(perc_completed) + "%");
         access.close();
     }
 

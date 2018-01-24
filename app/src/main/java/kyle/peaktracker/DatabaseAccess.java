@@ -74,9 +74,9 @@ public class DatabaseAccess {
         double total;
         double perc;
 
-        if(tableName == "adk_peaks"){
+        if(tableName.equals("adk_peaks")){
             total = 46.0;
-        }else if(tableName == "ne_peaks"){
+        }else if(tableName.equals("ne_peaks")){
             total = 115.0;
         }else{
             total = 0.0;
@@ -86,8 +86,8 @@ public class DatabaseAccess {
         while(!c.isAfterLast()){
             if(c.getString(c.getColumnIndex("_climbed"))!= null){
                 temp_compare = c.getString(c.getColumnIndex("_climbed"));
-                Log.d("TEMP COMPARE",temp_compare);
-                if(temp_compare == "Y"){
+                Log.d("TEMP COMPARE", temp_compare);
+                if(temp_compare.equals("Y")){
                     num_hiked++;
                     Log.d("NUM HIKED", Double.toString(num_hiked));
                 }
