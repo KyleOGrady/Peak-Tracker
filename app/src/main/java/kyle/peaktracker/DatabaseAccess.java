@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 public class DatabaseAccess {
 
     private SQLiteOpenHelper openHelper;
@@ -91,7 +93,6 @@ public class DatabaseAccess {
                     num_hiked++;
                     Log.d("NUM HIKED", Double.toString(num_hiked));
                 }
-
                 c.moveToNext();
             }
         }
@@ -100,6 +101,16 @@ public class DatabaseAccess {
         Log.d("PERCENTAGE", Double.toString(perc));
 
         return perc;
+    }
+
+    public ArrayList<Peak> populatePeaks(String tableName){
+        ArrayList<Peak> peaksList = new ArrayList<>();
+        String query = "SELECT * FROM " + tableName + " WHERE 1";
+
+        Cursor c = database.rawQuery(query, null);
+        c.moveToFirst();
+
+        return peaksList;
     }
 
 }

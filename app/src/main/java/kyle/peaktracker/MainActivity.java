@@ -1,9 +1,11 @@
 package kyle.peaktracker;
 
+import android.content.Intent;
 import android.database.SQLException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import java.text.DecimalFormat;
 import android.widget.TextView;
@@ -26,9 +28,9 @@ public class MainActivity extends AppCompatActivity {
 
         DatabaseAccess access = DatabaseAccess.getInstance(this);
         //Setting Id's
-        NE115 = (Button) findViewById(R.id.ne115_display);
-        ADK46 = (Button) findViewById(R.id.adk_display);
-        NH48 = (Button) findViewById(R.id.nh_display);
+        NE115 = (Button) findViewById(R.id.ne115_display_button);
+        ADK46 = (Button) findViewById(R.id.adk_display_button);
+        NH48 = (Button) findViewById(R.id.nh_display_button);
 
         //NE115 Setting Display
         double perc_completed = 0.0; //initial value does not matter
@@ -37,6 +39,14 @@ public class MainActivity extends AppCompatActivity {
 
         ADK46.setText("ADK46: " + df.format(perc_completed) + "%");
         access.close();
+
+        //Button Actions
+        ADK46.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ADKActivity.class));
+            }
+        });
     }
 
 
