@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
+import android.util.Log;
 
 public class DatabaseAccess {
 
@@ -29,6 +29,7 @@ public class DatabaseAccess {
      */
     public void open() {
         this.database = openHelper.getWritableDatabase();
+        Log.d("DATABASE ACCES", "opened database");
     }
 
     /**
@@ -37,6 +38,7 @@ public class DatabaseAccess {
     public void close() {
         if (database != null) {
             this.database.close();
+            Log.d("DATABASE ACCES", "closed database");
         }
     }
 
@@ -48,15 +50,56 @@ public class DatabaseAccess {
 
         c.moveToFirst();
 
-        while(!c.isAfterLast()){
+        dbString += c.getString(c.getColumnIndex("_name"));
+
+        /*while(!c.isAfterLast()){
             if(c.getString(c.getColumnIndex("_name"))!= null){
                 dbString += c.getString(c.getColumnIndex("_name"));
                 dbString += "\n";
+                Log.e("COLUMN: ", dbString);
+                c.moveToNext();
+            }
+        }*/
+        c.close(); //Added
+        return dbString;
+    }
+
+    public double calculate_completion(String tableName){
+
+        String query = "SELECT _climbed FROM " + tableName + " WHERE 1";
+
+        Cursor c = database.rawQuery(query, null);
+        String temp_compare = ""; //placeholder for N or Y
+        double num_hiked = 0.0;
+        double total;
+        double perc;
+
+        if(tableName == "adk_peaks"){
+            total = 46.0;
+        }else if(tableName == "ne_peaks"){
+            total = 115.0;
+        }else{
+            total = 0.0;
+        }
+
+        c.moveToFirst();
+        while(!c.isAfterLast()){
+            if(c.getString(c.getColumnIndex("_climbed"))!= null){
+                temp_compare = c.getString(c.getColumnIndex("_climbed"));
+                Log.d("TEMP COMPARE",temp_compare);
+                if(temp_compare == "Y"){
+                    num_hiked++;
+                    Log.d("NUM HIKED", Double.toString(num_hiked));
+                }
+
+                c.moveToNext();
             }
         }
-        c.close(); //Added
-        //database.close();
-        return dbString;
+
+        perc = num_hiked/total;
+        Log.d("PERCENTAGE", Double.toString(perc));
+
+        return perc;
     }
 
 }
