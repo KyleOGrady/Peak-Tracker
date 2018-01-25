@@ -32,7 +32,7 @@ public class DatabaseAccess {
      */
     public void open() {
         this.database = openHelper.getWritableDatabase();
-        Log.d("DATABASE ACCES", "opened database");
+        Log.d("DATABASE ACCESS", "opened database");
     }
 
     /**
@@ -41,7 +41,7 @@ public class DatabaseAccess {
     public void close() {
         if (database != null) {
             this.database.close();
-            Log.d("DATABASE ACCES", "closed database");
+            Log.d("DATABASE ACCESS", "closed database");
         }
     }
 
@@ -100,7 +100,7 @@ public class DatabaseAccess {
 
         perc = num_hiked/total;
         Log.d("PERCENTAGE", Double.toString(perc));
-
+        c.close();
         return perc;
     }
 
@@ -109,12 +109,59 @@ public class DatabaseAccess {
         String query = "SELECT * FROM " + tableName;
 
         Cursor c = database.rawQuery(query, null);
-        c.moveToFirst();
+
+        while(c.moveToNext()) {
+            Peak temp = new Peak();
+            for (int i = 0; i < c.getColumnCount()+1; i++) {
+                switch(i){
+                    case 0: //ID
+                        temp.set_id(c.getInt(i));
+                        Log.d("SET OBJECT", "Setting ID to " + c.getInt(i));
+                        break;
+                    case 1: // NAME
+                        temp.set_name(c.getString(i));
+                        Log.d("SET OBJECT", "Setting name to " + c.getString(i));
+                        break;
+                    case 2: //HEIGHT
+                        temp.set_height(c.getInt(i));
+                        Log.d("SET OBJECT", "Setting height to " + c.getInt(i));
+                        break;
+                    case 3: //CLIMBED
+                        temp.set_climbed(c.getString(i));
+                        Log.d("SET OBJECT", "Setting climbed to " + c.getString(i));
+                        break;
+                    case 4: //DATE
+                        temp.set_date(c.getString(i));
+                        Log.d("SET OBJECT", "Setting date to " + c.getString(i));
+                        break;
+                    case 5: //LIST
+                        temp.set_list(c.getString(i));
+                        Log.d("SET OBJECT", "Setting list to " + c.getString(i));
+                        break;
+                    case 6:
+                        peaksList.add(temp);
+                        Log.d("ADDING OBJECT", "Adding " + temp.get_name() + " to peaksList.");
+                        break;
+                }
+            }
+        }
+
+        c.close();
+        return peaksList;
+    }
+
+    /*public List<Peak> populatePeaks(String tableName){
+        List<Peak> peaksList = new ArrayList<>();
+        String query = "SELECT * FROM " + tableName;
+
+        Cursor c = database.rawQuery(query, null);
+        //c.moveToFirst();
         Peak tempPeak = new Peak();
         Log.d("COLUMN COUNT", Integer.toString(c.getColumnCount()));
         String temp = "";
 
-        while(!c.isAfterLast()){
+        //while(!c.isAfterLast()){
+        while(c.moveToNext()){
             for(int i=0; i<c.getColumnCount(); i++){
                 temp = c.getString(i);
 
@@ -147,14 +194,17 @@ public class DatabaseAccess {
             }
 
             //peaksList.add(tempPeak);
-            Log.d("ADD PEAK", "Adding " + tempPeak.get_name() + "to database.");
+            Log.d("ADD PEAK", "Adding " + tempPeak.get_name() + " to list.");
             peaksList.add(tempPeak);
-            //temp = "";
-            c.moveToNext();
+            for(int i = 0; i < peaksList.size(); i ++) {
+                Log.d("ADDED PEAK", "Added " + peaksList.get(i).get_name() + " to list");
+            }
+            temp = "";
+            //c.moveToNext();
 
         }
-
+        c.close();
         return peaksList;
-    }
+    } */
 
 }
