@@ -69,18 +69,19 @@ public class DatabaseAccess {
 
     public double calculate_completion(String tableName){
 
-        String query = "SELECT _climbed FROM " + tableName + " WHERE 1";
+        String query = "SELECT _climbed FROM " + tableName;
 
         Cursor c = database.rawQuery(query, null);
         String temp_compare = ""; //placeholder for N or Y
         double num_hiked = 0.0;
         double total;
         double perc;
-
-        if(tableName.equals("adk_peaks")){
-            total = 46.0;
-        }else if(tableName.equals("ne_peaks")){
+        if(tableName.equals("ne_peaks")){
             total = 115.0;
+        }else if(tableName.equals("adk_peaks")){
+            total = 46.0;
+        }else if(tableName.equals("nh_peaks")){
+            total = 48.0;
         }else{
             total = 0.0;
         }
@@ -98,7 +99,7 @@ public class DatabaseAccess {
             }
         }
 
-        perc = num_hiked/total;
+        perc = (num_hiked/total)*100;
         Log.d("PERCENTAGE", Double.toString(perc));
         c.close();
         return perc;

@@ -16,7 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ADKActivity"></activity>
+        <activity android:name=".ADKActivity" />
+        <activity android:name=".NHActivity"></activity>
     </application>
 
 </manifest>
