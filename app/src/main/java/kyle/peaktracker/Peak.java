@@ -38,7 +38,7 @@ public class Peak {
         this._date = _date;
     }
 
-    public void set_id(String _list){
+    public void set_list(String _list){
         this._list = _list;
     }
 
