@@ -143,8 +143,11 @@ public class DatabaseAccess {
         return peaksList;
     }
 
-   /* public void claimPeak(String peakName, tableName){
-        String query = "SELECT * FROM " + ;
-    }*/
+    public void claimPeak(String peakName, String tableName){
+        String query = "UPDATE " + tableName + " SET _climbed = 'Y' WHERE _name = '" + peakName + "';";
+
+        Cursor c = database.rawQuery(query, null);
+        c.close();
+    }
 
 }

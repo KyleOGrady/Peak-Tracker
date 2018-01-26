@@ -3,12 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="3">
 
     <ListView
         android:id="@+id/adk_peak_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </ListView>
+        android:layout_height="wrap_content"
+        android:layout_weight="2"></ListView>
+
+    <Button
+        android:id="@+id/claim_peak"
+        tools:layout_marginTop="-1500dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Claim Peak"
+        android:layout_weight="1"/>
+
 
 </LinearLayout>
