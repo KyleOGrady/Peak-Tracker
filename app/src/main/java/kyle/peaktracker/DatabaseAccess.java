@@ -55,14 +55,6 @@ public class DatabaseAccess {
 
         dbString += c.getString(c.getColumnIndex("_name"));
 
-        /*while(!c.isAfterLast()){
-            if(c.getString(c.getColumnIndex("_name"))!= null){
-                dbString += c.getString(c.getColumnIndex("_name"));
-                dbString += "\n";
-                Log.e("COLUMN: ", dbString);
-                c.moveToNext();
-            }
-        }*/
         c.close(); //Added
         return dbString;
     }
@@ -151,61 +143,8 @@ public class DatabaseAccess {
         return peaksList;
     }
 
-    /*public List<Peak> populatePeaks(String tableName){
-        List<Peak> peaksList = new ArrayList<>();
-        String query = "SELECT * FROM " + tableName;
-
-        Cursor c = database.rawQuery(query, null);
-        //c.moveToFirst();
-        Peak tempPeak = new Peak();
-        Log.d("COLUMN COUNT", Integer.toString(c.getColumnCount()));
-        String temp = "";
-
-        //while(!c.isAfterLast()){
-        while(c.moveToNext()){
-            for(int i=0; i<c.getColumnCount(); i++){
-                temp = c.getString(i);
-
-                switch(i){
-                    case 0:
-                        Log.d("SET OBJECT", "Setting ID to " + temp);
-                        tempPeak.set_id(Integer.parseInt(temp));
-                        break;
-                    case 1:
-                        Log.d("SET OBJECT", "Setting name to " + temp);
-                        tempPeak.set_name(temp);
-                        break;
-                    case 2:
-                        Log.d("SET OBJECT", "Setting height to " + temp);
-                        tempPeak.set_height(Integer.parseInt(temp));
-                        break;
-                    case 3:
-                        Log.d("SET OBJECT", "Setting climbed to " + temp);
-                        tempPeak.set_climbed(temp);
-                        break;
-                    case 4:
-                        Log.d("SET OBJECT", "Setting date to " + temp);
-                        tempPeak.set_date(temp);
-                        break;
-                    case 5:
-                        Log.d("SET OBJECT", "Setting list to " + temp);
-                        tempPeak.set_list(temp);
-                        break;
-                }
-            }
-
-            //peaksList.add(tempPeak);
-            Log.d("ADD PEAK", "Adding " + tempPeak.get_name() + " to list.");
-            peaksList.add(tempPeak);
-            for(int i = 0; i < peaksList.size(); i ++) {
-                Log.d("ADDED PEAK", "Added " + peaksList.get(i).get_name() + " to list");
-            }
-            temp = "";
-            //c.moveToNext();
-
-        }
-        c.close();
-        return peaksList;
-    } */
+   /* public void claimPeak(String peakName, tableName){
+        String query = "SELECT * FROM " + ;
+    }*/
 
 }

@@ -66,4 +66,11 @@ public class Peak {
     public String get_list(){
         return _list;
     }
+
+    //Methods
+
+    public String toString(){
+        String printPeak = _id + ": " + _name + " | Climbed: " + _climbed;
+        return printPeak;
+    }
 }

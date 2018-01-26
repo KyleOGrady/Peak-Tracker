@@ -13,7 +13,7 @@ public class ADKActivity extends AppCompatActivity {
 
     ListView peaksListView;
     List<Peak> peaksList = new ArrayList<>();
-    List<String> testNames = new ArrayList<>();
+    List<String> peaksToLayout = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,16 +28,10 @@ public class ADKActivity extends AppCompatActivity {
 
         for(Peak peak: peaksList) {
             Log.d("PEAKS NAME", peak.get_name());
-            testNames.add(peak.get_name());
+            peaksToLayout.add(peak.toString());
         }
 
-
-//        for(int i = 0; i < peaksList.size(); i++){
-//            Log.d("PEAKS NAME" , peaksList.get(i).get_name());
-//            testNames.add(peaksList.get(i).get_name());
-//        }
-
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.activity_peak_listview, R.id.peak_textView, testNames);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.activity_peak_listview, R.id.peak_textView, peaksToLayout);
         peaksListView.setAdapter(arrayAdapter);
 
     }
