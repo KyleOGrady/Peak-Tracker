@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -46,14 +47,19 @@ public class ADKActivity extends AppCompatActivity {
             public void onClick(View v) {
                 access.open();
                 access.claimPeak("Skylight", "adk_peaks");
+                peaksList.clear();
                 peaksList = access.populatePeaks("adk_peaks");
 
                 for(Peak peak: peaksList){
-                    Log.d("PEAKS NAME: ", peak.get_name());
+                    Log.d("PEAKS NAME: ", peak.get_name() + " CLIMBED: " + peak.get_climbed());
+                    peaksToLayout.add(peak.toString());
                 }
                 access.close();
 
-                arrayAdapter.notifyDataSetChanged();
+               // peaksListView.invalidateViews();
+
+               // ((BaseAdapter) peaksListView.getAdapter()).notifyDataSetChanged();
+                //arrayAdapter.notifyDataSetChanged();
             }
         });
     }

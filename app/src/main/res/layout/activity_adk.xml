@@ -14,7 +14,7 @@
 
     <Button
         android:id="@+id/claim_peak"
-        tools:layout_marginTop="-1500dp"
+        android:padding="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Claim Peak"
