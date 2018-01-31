@@ -146,8 +146,6 @@ public class DatabaseAccess {
     public void claimPeak(String peakName, String tableName){
         String query = "UPDATE " + tableName + " SET _climbed = 'Y' WHERE _name = '" + peakName + "';";
         database.execSQL(query);
-        //Cursor c = database.rawQuery(query, null);
-       // c.close();
     }
 
 }

@@ -21,29 +21,28 @@ public class MainActivity extends AppCompatActivity {
     Button ADK46;
     Button NH48;
 
+    DatabaseAccess access;
+    //Setting Display
+    double adk_perc_completed = 0.0; //initial value does not matter
+    double nh_perc_completed = 0.0;
+
     DecimalFormat df = new DecimalFormat("###");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        DatabaseAccess access = DatabaseAccess.getInstance(this);
+        access = DatabaseAccess.getInstance(this);
+        // DatabaseAccess access = DatabaseAccess.getInstance(this);
         //Setting Id's
         NE115 = (Button) findViewById(R.id.ne115_display_button);
         ADK46 = (Button) findViewById(R.id.adk_display_button);
         NH48 = (Button) findViewById(R.id.nh_display_button);
 
-        //Setting Display
-        double adk_perc_completed = 0.0; //initial value does not matter
-        double nh_perc_completed = 0.0;
-
         access.open();
         adk_perc_completed = access.calculate_completion("adk_peaks");
         nh_perc_completed = access.calculate_completion("nh_peaks");
         access.close();
-
-        access.open();
 
         //Setting text for the buttons
         ADK46.setText("ADK46: " + df.format(adk_perc_completed) + "%");
@@ -63,8 +62,18 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, NHActivity.class));
             }
         });
-
     }
 
+    protected void onResume(){
+        super.onResume();
+
+        access.open();
+        adk_perc_completed = access.calculate_completion("adk_peaks");
+        nh_perc_completed = access.calculate_completion("nh_peaks");
+        access.close();
+
+        ADK46.setText("ADK46: " + df.format(adk_perc_completed) + "%");
+        NH48.setText("NH48: " + df.format(nh_perc_completed) + "%");
+    }
 
 }
