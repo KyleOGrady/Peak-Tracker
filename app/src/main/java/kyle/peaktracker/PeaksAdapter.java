@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.List;
 
 public class PeaksAdapter extends ArrayAdapter<String>{
@@ -18,18 +17,11 @@ public class PeaksAdapter extends ArrayAdapter<String>{
     private int resource;
     private Context context;
 
-    public View.OnClickListener listener;
-
     public PeaksAdapter(Context context, int resource, List<String> items, View.OnClickListener listener){
         super(context, resource, items);
         this.resource = resource;
         this.context = context;
         this.items = items;
-        this.listener = listener;
-    }
-
-    public void setButtonListener(View.OnClickListener listener){
-        this.listener = listener;
     }
 
     @Override
@@ -45,18 +37,8 @@ public class PeaksAdapter extends ArrayAdapter<String>{
             convertView.setTag(holder);
         }
         mainPeakHolder = (PeakHolder) convertView.getTag();
-        mainPeakHolder.claimPeak.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Toast.makeText(getContext(), "Button was clicked for list item " + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-        mainPeakHolder.info.setText(getItem(position));
-
-        if (this.listener != null) {
-            mainPeakHolder.claimPeak.setOnClickListener(this.listener);
-        }
+        mainPeakHolder.info.setText(getItem(position).toString());
 
         return convertView;
     }
