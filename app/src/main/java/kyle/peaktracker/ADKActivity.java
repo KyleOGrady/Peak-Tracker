@@ -47,7 +47,7 @@ public class ADKActivity extends AppCompatActivity {
             peaksToLayout.add(peak.toString());
         }
 
-        PeaksAdapter adapter = new PeaksAdapter(this, R.layout.activity_peak_listview, peaksToLayout);
+        PeaksAdapter adapter = new PeaksAdapter(this, R.layout.activity_peak_listview, peaksList);
 
         peaksListView.setAdapter(adapter);
 
