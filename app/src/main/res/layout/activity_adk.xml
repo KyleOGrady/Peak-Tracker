@@ -4,12 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="1">
+    android:weightSum="4">
+
+    <TextView
+        style="@style/peakHeader"
+        android:background="@drawable/adk_background"
+        android:id="@+id/adkHeader"
+        android:layout_width="match_parent"
+        android:text="Adirondack 46" />
 
     <ListView
         android:id="@+id/adk_peak_list"
+        android:background="@color/peacockBlue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"/>
+        android:layout_weight="3"/>
 
 </LinearLayout>

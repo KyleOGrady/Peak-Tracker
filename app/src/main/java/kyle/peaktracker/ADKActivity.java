@@ -1,6 +1,7 @@
 package kyle.peaktracker;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +25,7 @@ public class ADKActivity extends AppCompatActivity {
     List<String> peaksToLayout = new ArrayList<>();
 
     Button claimPeak;
+    TextView header;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +33,9 @@ public class ADKActivity extends AppCompatActivity {
         setContentView(R.layout.activity_adk);
         final DatabaseAccess access = DatabaseAccess.getInstance(this);
 
-        //claimPeak = (Button) findViewById(R.id.claimPeak);
+        header = (TextView)findViewById(R.id.adkHeader);
+        Typeface noir = Typeface.createFromAsset(getAssets(), "fonts/NoirStd-Regular.ttf");
+        header.setTypeface(noir);
 
         access.open();
         peaksListView = (ListView)findViewById(R.id.adk_peak_list);
@@ -40,10 +44,10 @@ public class ADKActivity extends AppCompatActivity {
 
         for(Peak peak: peaksList) {
             //Log.d("PEAKS NAME", peak.get_name());
-            peaksToLayout.add(peak.get_name() + " | Climbed: " + peak.get_climbed());
+            peaksToLayout.add(peak.toString());
         }
 
-        PeaksAdapter adapter = new PeaksAdapter(this, R.layout.activity_peak_listview, peaksToLayout, null);
+        PeaksAdapter adapter = new PeaksAdapter(this, R.layout.activity_peak_listview, peaksToLayout);
 
         peaksListView.setAdapter(adapter);
 

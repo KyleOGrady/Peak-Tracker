@@ -8,4 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="peakHeader" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/peakBrown</item>
+        <item name="android:textSize">50dp</item>
+        <item name="android:layout_height">77dp</item>
+    </style>
+
 </resources>

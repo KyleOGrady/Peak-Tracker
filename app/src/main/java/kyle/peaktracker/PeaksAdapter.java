@@ -1,6 +1,7 @@
 package kyle.peaktracker;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,7 @@ public class PeaksAdapter extends ArrayAdapter<String>{
     private int resource;
     private Context context;
 
-    public PeaksAdapter(Context context, int resource, List<String> items, View.OnClickListener listener){
+    public PeaksAdapter(Context context, int resource, List<String> items){
         super(context, resource, items);
         this.resource = resource;
         this.context = context;
@@ -32,7 +33,9 @@ public class PeaksAdapter extends ArrayAdapter<String>{
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(resource, parent, false);
             PeakHolder holder = new PeakHolder();
+            Typeface noir = Typeface.createFromAsset(context.getAssets(),"fonts/NoirStd-Regular.ttf");
             holder.info = convertView.findViewById(R.id.peak_textView);
+            holder.info.setTypeface(noir);
             holder.claimPeak = convertView.findViewById(R.id.peak_claimPeak);
             convertView.setTag(holder);
         }
@@ -44,7 +47,6 @@ public class PeaksAdapter extends ArrayAdapter<String>{
     }
 
     public static class PeakHolder {
-        Peak peak;
         TextView info;
         Button claimPeak;
     }

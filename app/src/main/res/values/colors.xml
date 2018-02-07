@@ -3,4 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="peacockBlue">#3B7492</color>
+    <color name="celeryGreen">#928C2E</color>
+    <color name="peakBrown">#A56621</color>
 </resources>

@@ -70,7 +70,7 @@ public class Peak {
     //Methods
 
     public String toString(){
-        String printPeak = _id + ": " + _name + " | Climbed: " + _climbed;
+        String printPeak =  _name + " " + _height + " | " + _climbed;
         return printPeak;
     }
 }
