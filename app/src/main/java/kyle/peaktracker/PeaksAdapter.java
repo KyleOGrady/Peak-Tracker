@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +28,7 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
     private Context context;
     String printPeakInfo = "";
     String printDate = "";
+    DatabaseAccess access = DatabaseAccess.getInstance(context);;
 
     public PeaksAdapter(Context context, int resource, List<Peak> items){
         super(context, resource, items);
@@ -71,6 +73,36 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
         mainPeakHolder.info.setText(printPeakInfo);
         mainPeakHolder.dateClimbed.setText(printDate);
 
+
+        holder.claimPeak.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                access.open();
+
+                String peakName = getItem(position).get_name();
+                String list = getItem(position).get_list();
+                String tableName = "";
+
+                if(list.equals("ADK")){
+                    tableName = "adk_peaks";
+                } else if(list.equals("NH")){
+                    tableName = "nh_peaks";
+                } else {
+                    tableName = null;
+                }
+                // NEED TO ADD OTHER TABLE NAMES LATER
+
+                access.claimPeak(peakName, tableName);
+                Log.d("CLAIMING PEAK", peakName);
+                access.close();
+
+                Toast.makeText(context, "Peak Claimed", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
         return convertView;
     }
 
@@ -78,5 +110,11 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
         TextView info;
         TextView dateClimbed;
         Button claimPeak;
+    }
+
+    public void refreshList(List<Peak> peaksList){
+        peaksList.clear();
+        peaksList.addAll(peaksList);
+        notifyDataSetChanged();
     }
 }

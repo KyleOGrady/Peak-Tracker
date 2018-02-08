@@ -23,6 +23,7 @@ public class ADKActivity extends AppCompatActivity {
     ListView peaksListView;
     List<Peak> peaksList = new ArrayList<>();
     List<String> peaksToLayout = new ArrayList<>();
+    PeaksAdapter adapter;
 
     Button claimPeak;
     TextView header;
@@ -42,28 +43,18 @@ public class ADKActivity extends AppCompatActivity {
         peaksList = access.populatePeaks("adk_peaks");
         access.close();
 
-        for(Peak peak: peaksList) {
-            //Log.d("PEAKS NAME", peak.get_name());
-            peaksToLayout.add(peak.toString());
-        }
+//        for(Peak peak: peaksList) {
+//            //Log.d("PEAKS NAME", peak.get_name());
+//            peaksToLayout.add(peak.toString());
+//        }
 
-        PeaksAdapter adapter = new PeaksAdapter(this, R.layout.activity_peak_listview, peaksList);
+        adapter = new PeaksAdapter(this, R.layout.activity_peak_listview, peaksList);
 
         peaksListView.setAdapter(adapter);
 
     }
 
-    //Action for the Claim peak button
-    public void onClickClaimPeak(View view){
 
-        LinearLayout vwParentRow = (LinearLayout)view.getParent();
-
-        TextView child = (TextView)vwParentRow.getChildAt(0);
-        Button btnChild = (Button)vwParentRow.getChildAt(1);
-
-        Log.d("PEAK NAME CLICKED", child.getText().toString());
-
-    }
 
     protected void onResume(){
         super.onResume();
