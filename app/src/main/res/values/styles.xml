@@ -18,8 +18,8 @@
     <style name= "AppTheme.ClaimPeakPopUp">
         <item name = "android:windowIsTranslucent">true</item>
     </style>
-    
-    <style name= "datePicker" parent="@android:style/Widget.DatePicker">
 
+    <style name="DialogFragmentStyle" parent="@android:style/Theme.Dialog">
+        <item name="android:windowSoftInputMode">stateHidden|adjustResize</item>
     </style>
 </resources>

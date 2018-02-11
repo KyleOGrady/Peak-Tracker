@@ -131,7 +131,11 @@ public class DatabaseAccess {
                         temp.set_list(c.getString(i));
                         Log.d("SET OBJECT", "Setting list to " + c.getString(i));
                         break;
-                    case 6:
+                    case 6: //COMMENTS
+                        temp.set_comments(c.getString(i));
+                        Log.d("SET OBJECT", "Setting comments to " + c.getString(i));
+                        break;
+                    case 7:
                         peaksList.add(temp);
                         Log.d("ADDING OBJECT", "Adding " + temp.get_name() + " to peaksList.");
                         break;
@@ -143,8 +147,10 @@ public class DatabaseAccess {
         return peaksList;
     }
 
-    public void claimPeak(String peakName, String tableName){
-        String query = "UPDATE " + tableName + " SET _climbed = 'Y' WHERE _name = '" + peakName + "';";
+    public void claimPeak(String peakName, String date, String comments, String tableName){
+
+        String query = "UPDATE " + tableName + " SET _climbed = 'Y', _date = '" + date +
+                       "', _comments = '" + comments + "' WHERE _name = '" + peakName + "';";
         database.execSQL(query);
     }
 

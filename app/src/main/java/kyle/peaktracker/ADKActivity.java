@@ -55,7 +55,6 @@ public class ADKActivity extends AppCompatActivity {
     }
 
 
-
     protected void onResume(){
         super.onResume();
     }

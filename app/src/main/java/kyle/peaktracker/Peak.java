@@ -8,6 +8,7 @@ public class Peak {
     private String _climbed;
     private String _date;
     private String _list;
+    private String _comments;
 
     //Constructors
     public Peak(){
@@ -42,6 +43,10 @@ public class Peak {
         this._list = _list;
     }
 
+    public void set_comments(String _comments){
+        this._comments = _comments;
+    }
+
     //Getters
     public int get_id(){
         return _id;
@@ -65,6 +70,10 @@ public class Peak {
 
     public String get_list(){
         return _list;
+    }
+
+    public String get_comments() {
+        return _comments;
     }
 
     //Methods

@@ -30,6 +30,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -98,31 +99,39 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
         mainPeakHolder.info.setText(printPeakInfo);
         mainPeakHolder.dateClimbed.setText(printDate);
 
+        holder.info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, getItem(position).get_comments(), Toast.LENGTH_LONG).show();
+            }
+        });
 
         holder.claimPeak.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-//                View testView1 = (View)v.getParent().getParent();
-//                testView1.getBackground().setAlpha(100);
-
                 final Dialog dialog = new Dialog(context);
+
                 dialog.setContentView(R.layout.activity_claim_peak);
                 dialog.setTitle("TEST");
 
+                dialog.getWindow().setSoftInputMode(
+                        WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                 //Items on dialog
                 Button submitClaim = dialog.findViewById(R.id.submitClaim);
                 final EditText selectDate = (EditText)dialog.findViewById(R.id.selectDate);
+                final EditText enterComments = (EditText)dialog.findViewById(R.id.enterComments);
 
+                //Date Picking logic
                 final Calendar myCalendar = Calendar.getInstance();
-                final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+                final DatePickerDialog.OnDateSetListener date;
+
+                date = new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear,
                                           int dayOfMonth) {
-
-                        view.setCalendarViewShown(false);
 
                         myCalendar.set(Calendar.YEAR, year);
                         myCalendar.set(Calendar.MONTH, monthOfYear);
@@ -146,12 +155,18 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
                 });
 
 
+                //ON SUBMIT OF CLAIM
                 submitClaim.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
+                        String name = getItem(position).get_name();
+                        String date = selectDate.getText().toString();
+                        String comments = enterComments.getText().toString();
 
-
+                        access.open();
+                        access.claimPeak(name, date, comments, "adk_peaks");
+                        access.close();
 
                         dialog.dismiss();
                     }

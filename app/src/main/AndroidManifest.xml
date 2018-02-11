@@ -19,6 +19,7 @@
         <activity android:name=".ADKActivity" />
         <activity android:name=".NHActivity" />
         <activity android:name=".ClaimPeakActivity"
+                  android:windowSoftInputMode="adjustResize"
                   android:theme="@style/AppTheme.ClaimPeakPopUp" />
     </application>
 
