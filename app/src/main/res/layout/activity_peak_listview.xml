@@ -3,6 +3,8 @@
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:paddingRight="8dp"
+    android:paddingLeft="8dp"
     android:weightSum="4">
 
     <TextView
@@ -22,16 +24,17 @@
         android:layout_gravity="center"
         android:textSize="12dp"
         android:gravity="center_vertical"
+        android:layout_marginLeft="10dp"
         android:textColor="@color/lightBlue"
         android:layout_weight="1"/>
 
     <Button
         android:id="@+id/peak_claimPeak"
-        android:text="Claim Peak"
         android:layout_gravity="center"
         android:focusable="false"
+        android:background="@drawable/claim_image_2"
         android:focusableInTouchMode="false"
-        android:layout_width="90dp"
+        android:layout_width="95dp"
         android:layout_height="70dp"
         android:layout_weight="1"/>
 
