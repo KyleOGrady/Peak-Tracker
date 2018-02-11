@@ -8,4 +8,5 @@
     <color name="peakBrown">#A56621</color>
     <color name="unclaimedRed">#BF211E</color>
     <color name="lightBlue">#A6B4BF</color>
+    <color name ="transparent">#55000000</color>
 </resources>

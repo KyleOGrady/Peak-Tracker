@@ -15,4 +15,11 @@
         <item name="android:layout_height">77dp</item>
     </style>
 
+    <style name= "AppTheme.ClaimPeakPopUp">
+        <item name = "android:windowIsTranslucent">true</item>
+    </style>
+    
+    <style name= "datePicker" parent="@android:style/Widget.DatePicker">
+
+    </style>
 </resources>

@@ -1,21 +1,45 @@
 package kyle.peaktracker;
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroupOverlay;
+import android.view.ViewParent;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -28,7 +52,8 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
     private Context context;
     String printPeakInfo = "";
     String printDate = "";
-    DatabaseAccess access = DatabaseAccess.getInstance(context);;
+    DatabaseAccess access = DatabaseAccess.getInstance(context);
+    PopupWindow window;
 
     public PeaksAdapter(Context context, int resource, List<Peak> items){
         super(context, resource, items);
@@ -79,27 +104,64 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
             @Override
             public void onClick(View v) {
 
-                access.open();
+//                View testView1 = (View)v.getParent().getParent();
+//                testView1.getBackground().setAlpha(100);
 
-                String peakName = getItem(position).get_name();
-                String list = getItem(position).get_list();
-                String tableName = "";
+                final Dialog dialog = new Dialog(context);
+                dialog.setContentView(R.layout.activity_claim_peak);
+                dialog.setTitle("TEST");
 
-                if(list.equals("ADK")){
-                    tableName = "adk_peaks";
-                } else if(list.equals("NH")){
-                    tableName = "nh_peaks";
-                } else {
-                    tableName = null;
-                }
-                // NEED TO ADD OTHER TABLE NAMES LATER
+                //Items on dialog
+                Button submitClaim = dialog.findViewById(R.id.submitClaim);
+                final EditText selectDate = (EditText)dialog.findViewById(R.id.selectDate);
 
-                access.claimPeak(peakName, tableName);
-                Log.d("CLAIMING PEAK", peakName);
-                access.close();
+                final Calendar myCalendar = Calendar.getInstance();
+                final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
-                Toast.makeText(context, "Peak Claimed", Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                          int dayOfMonth) {
 
+                        view.setCalendarViewShown(false);
+
+                        myCalendar.set(Calendar.YEAR, year);
+                        myCalendar.set(Calendar.MONTH, monthOfYear);
+                        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        String myFormat = "MM/dd/yy"; //In which you need put here
+                        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+                        selectDate.setText(sdf.format(myCalendar.getTime()));
+                    }
+
+                };
+
+                selectDate.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        new DatePickerDialog(context, date, myCalendar
+                                .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                                myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                    }
+                });
+
+
+                submitClaim.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+
+
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
+
+
+//                Intent openPopUp = new Intent(context, ClaimPeakActivity.class);
+//                context.startActivity(openPopUp);
             }
         });
 
@@ -110,11 +172,5 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
         TextView info;
         TextView dateClimbed;
         Button claimPeak;
-    }
-
-    public void refreshList(List<Peak> peaksList){
-        peaksList.clear();
-        peaksList.addAll(peaksList);
-        notifyDataSetChanged();
     }
 }

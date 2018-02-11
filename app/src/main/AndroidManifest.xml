@@ -17,7 +17,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".ADKActivity" />
-        <activity android:name=".NHActivity"></activity>
+        <activity android:name=".NHActivity" />
+        <activity android:name=".ClaimPeakActivity"
+                  android:theme="@style/AppTheme.ClaimPeakPopUp" />
     </application>
 
 </manifest>
