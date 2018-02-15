@@ -1,5 +1,7 @@
 package kyle.peaktracker;
 
+import android.support.design.widget.BottomSheetDialog;
+import android.support.design.widget.BottomSheetBehavior;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -23,6 +25,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroupOverlay;
 import android.view.ViewParent;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -54,13 +57,14 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
     String printPeakInfo = "";
     String printDate = "";
     DatabaseAccess access = DatabaseAccess.getInstance(context);
-    PopupWindow window;
+    PeaksAdapter adapter;
 
     public PeaksAdapter(Context context, int resource, List<Peak> items){
         super(context, resource, items);
         this.resource = resource;
         this.context = context;
         this.items = items;
+        this.adapter = this;
     }
 
     @Override
@@ -92,17 +96,27 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
 
         mainPeakHolder = (PeakHolder) convertView.getTag();
 
-        printPeakInfo = getItem(position).get_id() + ". " + getItem(position).get_name() + " " +
-                        getItem(position).get_height() + "' | " + getItem(position).get_climbed();
+        printPeakInfo = getItem(position).get_name() + " " + getItem(position).get_height() + "'";
 
         printDate = "Climbed on " + "\n" + getItem(position).get_date();
         mainPeakHolder.info.setText(printPeakInfo);
         mainPeakHolder.dateClimbed.setText(printDate);
 
-        holder.info.setOnClickListener(new View.OnClickListener() {
+        //Bring up bottom dialog
+        holder.info.setOnLongClickListener(new View.OnLongClickListener() { //list is my listView
+
             @Override
-            public void onClick(View v) {
-                Toast.makeText(context, getItem(position).get_comments(), Toast.LENGTH_LONG).show();
+            public boolean onLongClick(View v) {
+
+                Log.d("TEST HOLD", "HELD");
+                BottomSheetDialog bottomDialog = new BottomSheetDialog(context);
+                bottomDialog.setContentView(R.layout.bottom_sheet_layout);
+                TextView comments = bottomDialog.findViewById(R.id.comments);
+                comments.setText(getItem(position).get_comments());
+
+
+                bottomDialog.show();
+                return true;
             }
         });
 
@@ -167,6 +181,7 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
                         access.open();
                         access.claimPeak(name, date, comments, "adk_peaks");
                         access.close();
+
 
                         dialog.dismiss();
                     }

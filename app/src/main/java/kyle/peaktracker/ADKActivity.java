@@ -21,10 +21,10 @@ import java.util.List;
 public class ADKActivity extends AppCompatActivity {
 
     ListView peaksListView;
-    List<Peak> peaksList = new ArrayList<>();
+    public List<Peak> peaksList = new ArrayList<>();
     List<String> peaksToLayout = new ArrayList<>();
     PeaksAdapter adapter;
-
+    final DatabaseAccess access = DatabaseAccess.getInstance(this);
     Button claimPeak;
     TextView header;
 
@@ -32,7 +32,7 @@ public class ADKActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adk);
-        final DatabaseAccess access = DatabaseAccess.getInstance(this);
+       // final DatabaseAccess access = DatabaseAccess.getInstance(this);
 
         header = (TextView)findViewById(R.id.adkHeader);
         Typeface noir = Typeface.createFromAsset(getAssets(), "fonts/NoirStd-Regular.ttf");
@@ -43,11 +43,6 @@ public class ADKActivity extends AppCompatActivity {
         peaksList = access.populatePeaks("adk_peaks");
         access.close();
 
-//        for(Peak peak: peaksList) {
-//            //Log.d("PEAKS NAME", peak.get_name());
-//            peaksToLayout.add(peak.toString());
-//        }
-
         adapter = new PeaksAdapter(this, R.layout.activity_peak_listview, peaksList);
 
         peaksListView.setAdapter(adapter);
@@ -57,5 +52,13 @@ public class ADKActivity extends AppCompatActivity {
 
     protected void onResume(){
         super.onResume();
+        access.open();
+        peaksList = access.populatePeaks("adk_peaks");
+        access.close();
+
+        for(Peak peak: peaksList){
+            Log.d("PEAKTEST", peak.get_name() + " CLIMBED" + peak.get_climbed());
+        }
+        adapter.notifyDataSetChanged();
     }
 }
