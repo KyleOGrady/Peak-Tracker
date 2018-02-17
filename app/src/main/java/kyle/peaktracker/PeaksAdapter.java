@@ -1,5 +1,11 @@
 package kyle.peaktracker;
 
+import android.app.Activity;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.BottomSheetBehavior;
 import android.app.AlertDialog;
@@ -30,6 +36,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -40,6 +47,8 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -58,6 +67,8 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
     String printDate = "";
     DatabaseAccess access = DatabaseAccess.getInstance(context);
     PeaksAdapter adapter;
+    Uri selectedimg = null;
+    private static final int SELECT_PICTURE = 1;
 
     public PeaksAdapter(Context context, int resource, List<Peak> items){
         super(context, resource, items);
@@ -75,7 +86,7 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
         convertView = inflater.inflate(resource, parent, false);
         PeakHolder holder = new PeakHolder();
 
-        Typeface noir = Typeface.createFromAsset(context.getAssets(),"fonts/NoirStd-Regular.ttf");
+        final Typeface noir = Typeface.createFromAsset(context.getAssets(),"fonts/NoirStd-Regular.ttf");
         holder.info = convertView.findViewById(R.id.peak_textView);
         holder.info.setTypeface(noir);
 
@@ -111,9 +122,26 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
                 Log.d("TEST HOLD", "HELD");
                 BottomSheetDialog bottomDialog = new BottomSheetDialog(context);
                 bottomDialog.setContentView(R.layout.bottom_sheet_layout);
+                //Setting items on screen
+                TextView name = bottomDialog.findViewById(R.id.name);
+                TextView height_climbed = bottomDialog.findViewById(R.id.height_climbed);
                 TextView comments = bottomDialog.findViewById(R.id.comments);
-                comments.setText(getItem(position).get_comments());
 
+                Typeface cabin_reg = Typeface.createFromAsset(context.getAssets(),"fonts/Cabin-Regular.ttf");
+                Typeface cabin_italic = Typeface.createFromAsset(context.getAssets(),"fonts/Cabin-Italic.ttf");
+                Typeface cabin_semiBold = Typeface.createFromAsset(context.getAssets(),"fonts/Cabin-SemiBold.ttf");
+
+                name.setTypeface(cabin_semiBold);
+                height_climbed.setTypeface(cabin_reg);
+                comments.setTypeface(cabin_italic);
+//                ImageView image = bottomDialog.findViewById(R.id.uploaded_image);
+//
+//                image.setImageResource(R.drawable.claim_image);
+                //Setting text for textfields
+                name.setText(getItem(position).get_name());
+                String height_climbed_text = getItem(position).get_height() + "' | Climbed on " + getItem(position).get_date();
+                height_climbed.setText(height_climbed_text);
+                comments.setText(getItem(position).get_comments());
 
                 bottomDialog.show();
                 return true;
@@ -134,8 +162,10 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
                         WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                 //Items on dialog
                 Button submitClaim = dialog.findViewById(R.id.submitClaim);
+                Button uploadImage = dialog.findViewById(R.id.upload_image);
                 final EditText selectDate = (EditText)dialog.findViewById(R.id.selectDate);
                 final EditText enterComments = (EditText)dialog.findViewById(R.id.enterComments);
+                final ImageView testView = dialog.findViewById(R.id.test_view);
 
                 //Date Picking logic
                 final Calendar myCalendar = Calendar.getInstance();
@@ -169,6 +199,33 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
                 });
 
 
+                //ON UPLOAD IMAGE CLICK
+                uploadImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        pickPhoto.setType("image/*");
+                        pickPhoto.setAction(Intent.ACTION_GET_CONTENT);
+                        ((Activity)context).startActivityForResult(Intent.createChooser(pickPhoto, "Select Picture"), SELECT_PICTURE);
+
+//                        Uri contentURI = pickPhoto.getData();
+//                        try {
+//                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), contentURI);
+//                            //String path = saveImage(bitmap);
+//                            Toast.makeText(context, "Image Saved!", Toast.LENGTH_SHORT).show();
+//                            testView.setImageBitmap(bitmap);
+//
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                            Toast.makeText(context, "Failed!", Toast.LENGTH_SHORT).show();
+//                        }
+
+
+                    }
+                });
+
                 //ON SUBMIT OF CLAIM
                 submitClaim.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -182,16 +239,11 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
                         access.claimPeak(name, date, comments, "adk_peaks");
                         access.close();
 
-
                         dialog.dismiss();
                     }
                 });
 
                 dialog.show();
-
-
-//                Intent openPopUp = new Intent(context, ClaimPeakActivity.class);
-//                context.startActivity(openPopUp);
             }
         });
 
@@ -203,4 +255,45 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
         TextView dateClimbed;
         Button claimPeak;
     }
+
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode == Activity.RESULT_OK) {
+//            if (data == null) {
+//                Log.e("ACTIVITY ERROR", "DATA IS NULL");
+//                return;
+//            }
+//            if(requestCode == SELECT_PICTURE) {
+//                selectedimg = data.getData();
+//                String selectedImagePath = getPath(selectedimg);
+//            }
+//        }
+//
+//    }
+
+//    public String getPath(Uri uri) {
+//        // just some safety built in
+//        if( uri == null ) {
+//            // TODO perform some logging or show user feedback
+//            return null;
+//        }
+//        // try to retrieve the image from the media store first
+//        // this will only work for images selected from gallery
+//        String[] projection = { MediaStore.Images.Media.DATA };
+//        Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
+//        if( cursor != null ){
+//            int column_index = cursor
+//                    .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+//            cursor.moveToFirst();
+//            String path = cursor.getString(column_index);
+//            cursor.close();
+//            return path;
+//        }
+//        // this is our fallback here
+//        return uri.getPath();
+//    }
+
+
+
 }

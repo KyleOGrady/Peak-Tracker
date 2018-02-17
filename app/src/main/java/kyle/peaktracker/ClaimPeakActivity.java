@@ -11,13 +11,7 @@ public class ClaimPeakActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_claim_peak);
 
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
 
-        int width = dm.widthPixels;
-        int height = dm.heightPixels;
-
-        getWindow().setLayout((int)(width *.8), (int)(height * .6));
 
     }
 }
