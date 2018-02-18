@@ -49,8 +49,17 @@ public class ADKActivity extends AppCompatActivity {
 
     }
 
-
     protected void onResume() {
         super.onResume();
+
+        adapter.clear();
+        peaksList.clear();
+
+        access.open();
+        peaksList.addAll(access.populatePeaks("adk_peaks"));
+        access.close();
+
+        adapter.notifyDataSetChanged();
+
     }
 }
