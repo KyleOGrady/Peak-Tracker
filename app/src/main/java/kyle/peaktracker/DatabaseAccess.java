@@ -1,13 +1,19 @@
 package kyle.peaktracker;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.provider.BlockedNumberContract.BlockedNumbers.COLUMN_ID;
 
 public class DatabaseAccess {
 
@@ -135,7 +141,17 @@ public class DatabaseAccess {
                         temp.set_comments(c.getString(i));
                         Log.d("SET OBJECT", "Setting comments to " + c.getString(i));
                         break;
-                    case 7:
+                    case 7: //IMAGE
+                        byte[] blob = c.getBlob(i);
+                        if(blob != null) {
+                            Bitmap image = BitmapFactory.decodeByteArray(blob, 0, blob.length);
+                            temp.set_image(image);
+                            Log.d("SET OBJECT", "Setting image.");
+                        } else {
+                            Log.d("SET OBJECT", "No image to set.");
+                        }
+                        break;
+                    case 8:
                         peaksList.add(temp);
                         Log.d("ADDING OBJECT", "Adding " + temp.get_name() + " to peaksList.");
                         break;
@@ -147,11 +163,22 @@ public class DatabaseAccess {
         return peaksList;
     }
 
-    public void claimPeak(String peakName, String date, String comments, String tableName){
+    public void claimPeak(String peakName, String date, String comments, byte[] image, String tableName){
+
+        insert_image(tableName, peakName, image);
 
         String query = "UPDATE " + tableName + " SET _climbed = 'Y', _date = '" + date +
                        "', _comments = '" + comments + "' WHERE _name = '" + peakName + "';";
+
         database.execSQL(query);
     }
+
+    public void insert_image(String tableName, String peakName, byte[] image){
+        ContentValues cv = new ContentValues();
+        cv.put("_image", image);
+        String[] whereArgs = new String[] {String.valueOf(peakName)};
+        database.update(tableName, cv, "_name=?", whereArgs);
+    }
+
 
 }

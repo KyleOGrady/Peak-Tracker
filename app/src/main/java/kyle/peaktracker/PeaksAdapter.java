@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.BottomSheetBehavior;
@@ -134,14 +135,15 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
                 name.setTypeface(cabin_semiBold);
                 height_climbed.setTypeface(cabin_reg);
                 comments.setTypeface(cabin_italic);
-//                ImageView image = bottomDialog.findViewById(R.id.uploaded_image);
-//
-//                image.setImageResource(R.drawable.claim_image);
+                ImageView image = bottomDialog.findViewById(R.id.uploaded_image);
+
                 //Setting text for textfields
                 name.setText(getItem(position).get_name());
                 String height_climbed_text = getItem(position).get_height() + "' | Climbed on " + getItem(position).get_date();
                 height_climbed.setText(height_climbed_text);
                 comments.setText(getItem(position).get_comments());
+
+                image.setImageBitmap(getItem(position).get_image());
 
                 bottomDialog.show();
                 return true;
@@ -153,67 +155,75 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
             @Override
             public void onClick(View v) {
 
-                final Dialog dialog = new Dialog(context);
+                Intent i = new Intent(context, ClaimPeakActivity.class);
+                String peakName = getItem(position).get_name();
+                Bundle bundle = new Bundle();
+                bundle.putString("PEAK NAME", peakName);
+                i.putExtras(bundle);
 
-                dialog.setContentView(R.layout.activity_claim_peak);
-                dialog.setTitle("TEST");
+                context.startActivity(i);
 
-                dialog.getWindow().setSoftInputMode(
-                        WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-                //Items on dialog
-                Button submitClaim = dialog.findViewById(R.id.submitClaim);
-                Button uploadImage = dialog.findViewById(R.id.upload_image);
-                final EditText selectDate = (EditText)dialog.findViewById(R.id.selectDate);
-                final EditText enterComments = (EditText)dialog.findViewById(R.id.enterComments);
-                final ImageView testView = dialog.findViewById(R.id.test_view);
-
-                //Date Picking logic
-                final Calendar myCalendar = Calendar.getInstance();
-                final DatePickerDialog.OnDateSetListener date;
-
-                date = new DatePickerDialog.OnDateSetListener() {
-
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                          int dayOfMonth) {
-
-                        myCalendar.set(Calendar.YEAR, year);
-                        myCalendar.set(Calendar.MONTH, monthOfYear);
-                        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        String myFormat = "MM/dd/yy"; //In which you need put here
-                        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
-                        selectDate.setText(sdf.format(myCalendar.getTime()));
-                    }
-
-                };
-
-                selectDate.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        new DatePickerDialog(context, date, myCalendar
-                                .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                                myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-                    }
-                });
-
-
-                //ON UPLOAD IMAGE CLICK
-                uploadImage.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        Intent pickPhoto = new Intent(Intent.ACTION_PICK,
-                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        pickPhoto.setType("image/*");
-                        pickPhoto.setAction(Intent.ACTION_GET_CONTENT);
-                        ((Activity)context).startActivityForResult(Intent.createChooser(pickPhoto, "Select Picture"), SELECT_PICTURE);
-
+//                final Dialog dialog = new Dialog(context);
+//
+//                dialog.setContentView(R.layout.activity_claim_peak);
+//                dialog.setTitle("TEST");
+//
+//                dialog.getWindow().setSoftInputMode(
+//                        WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+//                //Items on dialog
+//                Button submitClaim = dialog.findViewById(R.id.submitClaim);
+//                Button uploadImage = dialog.findViewById(R.id.upload_image);
+//                final EditText selectDate = (EditText)dialog.findViewById(R.id.selectDate);
+//                final EditText enterComments = (EditText)dialog.findViewById(R.id.enterComments);
+//                final ImageView testView = dialog.findViewById(R.id.test_view);
+//
+//                //Date Picking logic
+//                final Calendar myCalendar = Calendar.getInstance();
+//                final DatePickerDialog.OnDateSetListener date;
+//
+//                date = new DatePickerDialog.OnDateSetListener() {
+//
+//                    @Override
+//                    public void onDateSet(DatePicker view, int year, int monthOfYear,
+//                                          int dayOfMonth) {
+//
+//                        myCalendar.set(Calendar.YEAR, year);
+//                        myCalendar.set(Calendar.MONTH, monthOfYear);
+//                        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+//                        String myFormat = "MM/dd/yy"; //In which you need put here
+//                        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+//
+//                        selectDate.setText(sdf.format(myCalendar.getTime()));
+//                    }
+//
+//                };
+//
+//                selectDate.setOnClickListener(new View.OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(View v) {
+//                        new DatePickerDialog(context, date, myCalendar
+//                                .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+//                                myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+//                    }
+//                });
+//
+//
+//                //ON UPLOAD IMAGE CLICK
+//                uploadImage.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                        Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+//                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                        pickPhoto.setType("image/*");
+//                        pickPhoto.setAction(Intent.ACTION_GET_CONTENT);
+//                        ((Activity)context).startActivityForResult(Intent.createChooser(pickPhoto, "Select Picture"), SELECT_PICTURE);
+//
 //                        Uri contentURI = pickPhoto.getData();
 //                        try {
 //                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), contentURI);
-//                            //String path = saveImage(bitmap);
+//
 //                            Toast.makeText(context, "Image Saved!", Toast.LENGTH_SHORT).show();
 //                            testView.setImageBitmap(bitmap);
 //
@@ -221,29 +231,28 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
 //                            e.printStackTrace();
 //                            Toast.makeText(context, "Failed!", Toast.LENGTH_SHORT).show();
 //                        }
-
-
-                    }
-                });
-
-                //ON SUBMIT OF CLAIM
-                submitClaim.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        String name = getItem(position).get_name();
-                        String date = selectDate.getText().toString();
-                        String comments = enterComments.getText().toString();
-
-                        access.open();
-                        access.claimPeak(name, date, comments, "adk_peaks");
-                        access.close();
-
-                        dialog.dismiss();
-                    }
-                });
-
-                dialog.show();
+//
+//                    }
+//                });
+//
+//                //ON SUBMIT OF CLAIM
+//                submitClaim.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                        String name = getItem(position).get_name();
+//                        String date = selectDate.getText().toString();
+//                        String comments = enterComments.getText().toString();
+//
+//                        access.open();
+//                        access.claimPeak(name, date, comments, "adk_peaks");
+//                        access.close();
+//
+//                        dialog.dismiss();
+//                    }
+//                });
+//
+//                dialog.show();
             }
         });
 
@@ -256,43 +265,7 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
         Button claimPeak;
     }
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == Activity.RESULT_OK) {
-//            if (data == null) {
-//                Log.e("ACTIVITY ERROR", "DATA IS NULL");
-//                return;
-//            }
-//            if(requestCode == SELECT_PICTURE) {
-//                selectedimg = data.getData();
-//                String selectedImagePath = getPath(selectedimg);
-//            }
-//        }
-//
-//    }
 
-//    public String getPath(Uri uri) {
-//        // just some safety built in
-//        if( uri == null ) {
-//            // TODO perform some logging or show user feedback
-//            return null;
-//        }
-//        // try to retrieve the image from the media store first
-//        // this will only work for images selected from gallery
-//        String[] projection = { MediaStore.Images.Media.DATA };
-//        Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
-//        if( cursor != null ){
-//            int column_index = cursor
-//                    .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-//            cursor.moveToFirst();
-//            String path = cursor.getString(column_index);
-//            cursor.close();
-//            return path;
-//        }
-//        // this is our fallback here
-//        return uri.getPath();
-//    }
 
 
 

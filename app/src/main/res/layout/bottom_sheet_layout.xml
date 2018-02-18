@@ -46,7 +46,6 @@
             android:id="@+id/uploaded_image"
             android:layout_width="300dp"
             android:layout_height="281dp"
-
             android:layout_weight="1"
             android:src="@drawable/test_pic_1"/>
 

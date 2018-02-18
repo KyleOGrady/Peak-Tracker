@@ -50,15 +50,7 @@ public class ADKActivity extends AppCompatActivity {
     }
 
 
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
-        access.open();
-        peaksList = access.populatePeaks("adk_peaks");
-        access.close();
-
-        for(Peak peak: peaksList){
-            Log.d("PEAKTEST", peak.get_name() + " CLIMBED" + peak.get_climbed());
-        }
-        adapter.notifyDataSetChanged();
     }
 }

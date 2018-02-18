@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         access = DatabaseAccess.getInstance(this);
-        // DatabaseAccess access = DatabaseAccess.getInstance(this);
+
         //Setting Id's
         NE115 = (Button) findViewById(R.id.ne115_display_button);
         ADK46 = (Button) findViewById(R.id.adk_display_button);

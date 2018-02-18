@@ -1,5 +1,7 @@
 package kyle.peaktracker;
 
+import android.graphics.Bitmap;
+
 public class Peak {
 
     private int _id;
@@ -9,6 +11,7 @@ public class Peak {
     private String _date;
     private String _list;
     private String _comments;
+    private Bitmap _image;
 
     //Constructors
     public Peak(){
@@ -47,6 +50,10 @@ public class Peak {
         this._comments = _comments;
     }
 
+    public void set_image(Bitmap _image){
+        this._image = _image;
+    }
+
     //Getters
     public int get_id(){
         return _id;
@@ -74,6 +81,10 @@ public class Peak {
 
     public String get_comments() {
         return _comments;
+    }
+
+    public Bitmap get_image(){
+        return _image;
     }
 
     //Methods
