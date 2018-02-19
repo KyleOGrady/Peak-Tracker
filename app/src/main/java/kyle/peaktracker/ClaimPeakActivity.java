@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -40,11 +41,7 @@ public class ClaimPeakActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         final String peakName = bundle.getString("PEAK NAME");
-        for(int i = 0; i < 20; i++) {
-            Log.d("TEST PEAK NAME", peakName);
-        }
-//        dialog.getWindow().setSoftInputMode(
-//                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
         //Items on dialog
         Button submitClaim = (Button)findViewById(R.id.submitClaim);
         Button uploadImage = (Button)findViewById(R.id.upload_image);
@@ -103,15 +100,18 @@ public class ClaimPeakActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String name = peakName;
-                String date = selectDate.getText().toString();
-                String comments = enterComments.getText().toString();
+                if(selectDate.getText().toString().equals("") || enterComments.getText().toString().equals("")){
+                    Toast.makeText(getBaseContext(), "Enter some comments and select and date.", Toast.LENGTH_LONG).show();
+                } else{
+                    String date = selectDate.getText().toString();
+                    String comments = enterComments.getText().toString();
 
-                access.open();
-                access.claimPeak(name, date, comments, imageSaved, "adk_peaks");
-                access.close();
+                    access.open();
+                    access.claimPeak(peakName, date, comments, imageSaved, "adk_peaks");
+                    access.close();
 
-                finish();
+                    finish();
+                }
             }
         });
     }
@@ -124,8 +124,10 @@ public class ClaimPeakActivity extends AppCompatActivity {
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-              //  testView.setVisibility(View.VISIBLE);
+
                 imageSaved = getBitmapAsByteArray(selectedImage);
+
+                testView.setVisibility(View.VISIBLE);
                 testView.setImageBitmap(selectedImage);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();

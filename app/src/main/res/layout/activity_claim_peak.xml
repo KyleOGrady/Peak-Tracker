@@ -16,6 +16,7 @@
         android:layout_height="500dp"
         android:orientation="vertical"
         android:weightSum="5"
+        android:background="@color/peacockBlue"
         android:scrollbars="vertical"
         android:scrollbarAlwaysDrawVerticalTrack="true"
         tools:context="kyle.peaktracker.ClaimPeakActivity">
@@ -25,7 +26,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Claim Peak"
-            android:textSize="50sp"
+            android:textSize="30sp"
+            android:textColor="@color/lightBlue"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:layout_gravity="center"/>
@@ -35,7 +37,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:textColor="@color/yellowish"
+            android:backgroundTint="@color/yellowish"
             android:layout_marginTop="5dp"
+            android:gravity="center"
             android:hint="Enter Comments"
             android:layout_gravity="center"
             android:layout_weight="1"
@@ -46,6 +51,8 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:clickable="true"
+            android:textColor="@color/yellowish"
+            android:backgroundTint="@color/yellowish"
             android:layout_marginTop="5dp"
             android:layout_gravity="center"
             android:layout_weight="1"
@@ -62,8 +69,8 @@
 
         <Button
             android:id="@+id/submitClaim"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_width="199dp"
+            android:layout_height="100dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="10dp"
             android:layout_gravity="center"
@@ -74,6 +81,7 @@
             android:id="@+id/test_view"
             android:layout_width="200dp"
             android:layout_gravity="center"
+            android:visibility="invisible"
             android:layout_height="200dp" />
 
     </LinearLayout>

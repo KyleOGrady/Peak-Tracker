@@ -19,7 +19,7 @@
         <item name = "android:windowIsTranslucent">true</item>
     </style>
 
-    <style name="DialogFragmentStyle" parent="@android:style/Theme.Dialog">
+    <style name="DialogFragmentStyle" parent="@android:style/Theme.Holo.Dialog.NoActionBar">
         <item name="android:windowSoftInputMode">stateHidden|adjustResize</item>
     </style>
 </resources>
