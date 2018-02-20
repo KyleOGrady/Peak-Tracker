@@ -50,11 +50,14 @@ public class ClaimPeakActivity extends AppCompatActivity {
 
         //Items on dialog
         TextView claimPeak = (TextView)findViewById(R.id.claimPeakHeader);
-        Button submitClaim = (Button)findViewById(R.id.submitClaim);
+        ImageButton submitClaim = (ImageButton)findViewById(R.id.submitClaim);
         ImageButton uploadImage = (ImageButton)findViewById(R.id.upload_image);
         final EditText selectDate = (EditText)findViewById(R.id.selectDate);
         final EditText enterComments = (EditText)findViewById(R.id.enterComments);
         testView = (ImageView)findViewById(R.id.test_view);
+
+        int c = enterComments.getCurrentHintTextColor();
+        Log.d("HINT COLOR", String.format("%X", c));
 
         //Date Picking logic
         final Calendar myCalendar = Calendar.getInstance();
