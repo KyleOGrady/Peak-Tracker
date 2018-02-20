@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
@@ -14,12 +15,16 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -37,22 +42,30 @@ public class ClaimPeakActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_claim_peak);
 
         Bundle bundle = getIntent().getExtras();
         final String peakName = bundle.getString("PEAK NAME");
 
         //Items on dialog
+        TextView claimPeak = (TextView)findViewById(R.id.claimPeakHeader);
         Button submitClaim = (Button)findViewById(R.id.submitClaim);
-        Button uploadImage = (Button)findViewById(R.id.upload_image);
+        ImageButton uploadImage = (ImageButton)findViewById(R.id.upload_image);
         final EditText selectDate = (EditText)findViewById(R.id.selectDate);
         final EditText enterComments = (EditText)findViewById(R.id.enterComments);
         testView = (ImageView)findViewById(R.id.test_view);
 
-
         //Date Picking logic
         final Calendar myCalendar = Calendar.getInstance();
         final DatePickerDialog.OnDateSetListener date;
+
+        //Setting typefaces for each element in the layout
+        Typeface cabin_semiBold = Typeface.createFromAsset(getAssets(),"fonts/Cabin-SemiBold.ttf");
+        Typeface cabin_regular = Typeface.createFromAsset(getAssets(),"fonts/Cabin-Regular.ttf");
+        claimPeak.setTypeface(cabin_semiBold);
+        selectDate.setTypeface(cabin_regular);
+        enterComments.setTypeface(cabin_regular);
 
         date = new DatePickerDialog.OnDateSetListener() {
 
