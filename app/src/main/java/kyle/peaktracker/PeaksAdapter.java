@@ -66,10 +66,7 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
     private Context context;
     String printPeakInfo = "";
     String printDate = "";
-    DatabaseAccess access = DatabaseAccess.getInstance(context);
     PeaksAdapter adapter;
-    Uri selectedimg = null;
-    private static final int SELECT_PICTURE = 1;
 
     public PeaksAdapter(Context context, int resource, List<Peak> items){
         super(context, resource, items);
@@ -89,6 +86,7 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
 
         final Typeface noir = Typeface.createFromAsset(context.getAssets(),"fonts/NoirStd-Regular.ttf");
         holder.info = convertView.findViewById(R.id.peak_textView);
+        Log.d("HOLDER INFO TEXT", holder.info.getText().toString());
         holder.info.setTypeface(noir);
 
         holder.dateClimbed = convertView.findViewById(R.id.climbed_date);
@@ -177,9 +175,5 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
         TextView dateClimbed;
         Button claimPeak;
     }
-
-
-
-
 
 }
