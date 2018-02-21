@@ -3,6 +3,7 @@
     package="kyle.peaktracker">
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -24,6 +25,11 @@
         <activity android:name=".ClaimPeakActivity"
                   android:windowSoftInputMode="adjustResize"
                   android:theme="@style/Theme.AppCompat.Dialog" />
+
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <provider android:authorities="com.facebook.app.FacebookContentProvider1584973198206867"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true" />
 
     </application>
 

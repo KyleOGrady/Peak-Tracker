@@ -6,9 +6,11 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -140,11 +142,17 @@ public class ClaimPeakActivity extends AppCompatActivity {
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                int width = selectedImage.getWidth();
+                int height = selectedImage.getHeight();
+                Bitmap selectedImageScaled = getResizedBitmap(selectedImage, height/5, width/5);
+                //Bitmap selectedImageScaled = Bitmap.createScaledBitmap(selectedImage, width/10, height/10, true);
+                Log.d("SELECTED SIZE", Integer.toString(selectedImage.getByteCount()));
+                Log.d("SELECTED SCALED SIZE", Integer.toString(selectedImageScaled.getByteCount()));
 
-                imageSaved = getBitmapAsByteArray(selectedImage);
+                imageSaved = getBitmapAsByteArray(selectedImageScaled);
 
                 testView.setVisibility(View.VISIBLE);
-                testView.setImageBitmap(selectedImage);
+                testView.setImageBitmap(selectedImageScaled);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Toast.makeText(getBaseContext(), "Something went wrong", Toast.LENGTH_LONG).show();
@@ -159,6 +167,21 @@ public class ClaimPeakActivity extends AppCompatActivity {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
         return outputStream.toByteArray();
+    }
+
+    public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth)
+    {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // create a matrix for the manipulation
+        Matrix matrix = new Matrix();
+        // resize the bit map
+        matrix.postScale(scaleWidth, scaleHeight);
+        // recreate the new Bitmap
+        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
+        return resizedBitmap;
     }
 
 
