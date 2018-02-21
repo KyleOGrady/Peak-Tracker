@@ -81,6 +81,13 @@
             android:text="Submit Claim"
             android:scaleType="fitXY"/>
 
+        <com.facebook.share.widget.ShareButton
+            android:id="@+id/share_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="Share"
+            android:layout_gravity="center"/>
+
         <ImageView
             android:id="@+id/test_view"
             android:layout_width="200dp"

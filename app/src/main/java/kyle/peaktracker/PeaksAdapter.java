@@ -157,8 +157,11 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
 
                 Intent i = new Intent(context, ClaimPeakActivity.class);
                 String peakName = getItem(position).get_name();
+                String tableName = getItem(position).get_list();
+                Bitmap peakImage = getItem(position).get_image();
                 Bundle bundle = new Bundle();
                 bundle.putString("PEAK NAME", peakName);
+                bundle.putString("TABLE NAME", tableName);
                 i.putExtras(bundle);
 
                 context.startActivity(i);

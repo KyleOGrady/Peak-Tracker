@@ -40,7 +40,7 @@ public class ADKActivity extends AppCompatActivity {
 
         access.open();
         peaksListView = (ListView)findViewById(R.id.adk_peak_list);
-        peaksList = access.populatePeaks("adk_peaks");
+        peaksList = access.populatePeaks("adk_peaks", "_name");
         access.close();
 
         adapter = new PeaksAdapter(this, R.layout.activity_peak_listview, peaksList);
@@ -56,7 +56,7 @@ public class ADKActivity extends AppCompatActivity {
         peaksList.clear();
 
         access.open();
-        peaksList.addAll(access.populatePeaks("adk_peaks"));
+        peaksList.addAll(access.populatePeaks("adk_peaks", "_name"));
         access.close();
 
         adapter.notifyDataSetChanged();

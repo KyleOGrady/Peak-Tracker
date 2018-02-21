@@ -24,7 +24,7 @@ public class NHActivity extends AppCompatActivity {
 
         access.open();
         peaksListView = (ListView)findViewById(R.id.nh_peak_list);
-        peaksList = access.populatePeaks("nh_peaks");
+        peaksList = access.populatePeaks("nh_peaks", "_name");
         access.close();
 
         for(Peak peak: peaksList) {

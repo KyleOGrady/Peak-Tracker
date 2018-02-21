@@ -103,9 +103,9 @@ public class DatabaseAccess {
         return perc;
     }
 
-    public List<Peak> populatePeaks(String tableName){
+    public List<Peak> populatePeaks(String tableName, String orderBy){
         List<Peak> peaksList = new ArrayList<>();
-        String query = "SELECT * FROM " + tableName;
+        String query = "SELECT * FROM " + tableName + " ORDER BY " + orderBy + ";";
 
         Cursor c = database.rawQuery(query, null);
 
@@ -178,6 +178,19 @@ public class DatabaseAccess {
         cv.put("_image", image);
         String[] whereArgs = new String[] {String.valueOf(peakName)};
         database.update(tableName, cv, "_name=?", whereArgs);
+    }
+
+    public Bitmap query_image(String tableName, String peakName){
+        String query = "SELECT _image FROM " + tableName + " WHERE _name='" + peakName + "';";
+
+        Cursor c = database.rawQuery(query, null);
+        c.moveToFirst();
+
+        byte[] byteArray = c.getBlob(c.getColumnIndex("_image"));
+
+        Bitmap image = BitmapFactory.decodeByteArray(byteArray, 0 ,byteArray.length);
+
+        return image;
     }
 
 
