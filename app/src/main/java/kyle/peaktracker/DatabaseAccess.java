@@ -105,8 +105,12 @@ public class DatabaseAccess {
 
     public List<Peak> populatePeaks(String tableName, String orderBy){
         List<Peak> peaksList = new ArrayList<>();
-        String query = "SELECT * FROM " + tableName + " ORDER BY " + orderBy + ";";
-
+        String query;
+        if(orderBy.equals("_height")){
+            query = "SELECT * FROM " + tableName + " ORDER BY " + orderBy + " desc;";
+        }else {
+            query = "SELECT * FROM " + tableName + " ORDER BY " + orderBy + ";";
+        }
         Cursor c = database.rawQuery(query, null);
 
         while(c.moveToNext()) {
