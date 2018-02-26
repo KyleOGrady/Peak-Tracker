@@ -22,4 +22,11 @@
     <style name="DialogFragmentStyle" parent="@android:style/Theme.Holo.Dialog.NoActionBar">
         <item name="android:windowSoftInputMode">stateHidden|adjustResize</item>
     </style>
+
+    <style name="datepicker" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/lightBlue</item>
+        <item name="colorPrimaryDark">@color/peakBrown</item>
+        <item name="colorAccent">@color/celeryGreen </item>
+    </style>
+
 </resources>

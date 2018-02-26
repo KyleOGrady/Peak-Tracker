@@ -3,11 +3,14 @@ package kyle.peaktracker;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.Typeface;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -128,7 +131,7 @@ public class ClaimPeakActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(ClaimPeakActivity.this, date, myCalendar
+                new DatePickerDialog(ClaimPeakActivity.this, R.style.datepicker, date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
@@ -180,7 +183,17 @@ public class ClaimPeakActivity extends AppCompatActivity {
                     selectedImage = BitmapFactory.decodeStream(imageStream);
                     int width = selectedImage.getWidth();
                     int height = selectedImage.getHeight();
-                    Bitmap selectedImageScaled = getResizedBitmap(selectedImage, height / 5, width / 5);
+
+                    try {
+                        ExifInterface exif = new ExifInterface(getPath(imageUri));
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+
+                    Matrix matrix = new Matrix();
+
+
+                    Bitmap selectedImageScaled = getResizedBitmap(selectedImage, height / 5, width / 5, matrix);
                     //Bitmap selectedImageScaled = Bitmap.createScaledBitmap(selectedImage, width/10, height/10, true);
                     Log.d("SELECTED SIZE", Integer.toString(selectedImage.getByteCount()));
                     Log.d("SELECTED SCALED SIZE", Integer.toString(selectedImageScaled.getByteCount()));
@@ -212,19 +225,37 @@ public class ClaimPeakActivity extends AppCompatActivity {
         return outputStream.toByteArray();
     }
 
-    public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth)
+    public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth, Matrix m)
     {
         int width = bm.getWidth();
         int height = bm.getHeight();
         float scaleWidth = ((float) newWidth) / width;
         float scaleHeight = ((float) newHeight) / height;
         // create a matrix for the manipulation
-        Matrix matrix = new Matrix();
+
+
+
         // resize the bit map
-        matrix.postScale(scaleWidth, scaleHeight);
+        m.postScale(scaleWidth, scaleHeight);
         // recreate the new Bitmap
-        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
+        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, m, false);
         return resizedBitmap;
+    }
+
+    private static int exifToDegrees(int exifOrientation) {
+        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) { return 90; }
+        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {  return 180; }
+        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {  return 270; }
+        return 0;
+    }
+
+    private String getPath(Uri uri) {
+        String[]  data = { MediaStore.Images.Media.DATA };
+        CursorLoader loader = new CursorLoader(getApplicationContext(), uri, data, null, null, null);
+        Cursor cursor = loader.loadInBackground();
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
     }
 
 

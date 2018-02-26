@@ -32,19 +32,19 @@
             android:layout_weight="1"
             android:layout_gravity="center"/>
 
-
         <EditText
             android:id="@+id/enterComments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:textColor="@color/lightBlue"
-            android:backgroundTint="@color/lightBlue"
+            android:textColor="@color/lightGreen"
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:hint="Enter Comments"
+            android:backgroundTint="@color/lightGreen"
             android:layout_gravity="center"
             android:layout_weight="1"
+            android:textColorHint="@color/lightGreen"
             android:inputType="textMultiLine" />
 
         <EditText
@@ -52,12 +52,13 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:clickable="true"
-            android:textColor="@color/lightBlue"
-            android:backgroundTint="@color/lightBlue"
+            android:textColor="@color/lightGreen"
+            android:backgroundTint="@color/lightGreen"
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:focusable="false"
+            android:textColorHint="@color/lightGreen"
             android:hint="Select Date" />
 
         <ImageButton
