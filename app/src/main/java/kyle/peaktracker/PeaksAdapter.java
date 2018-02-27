@@ -30,7 +30,6 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
     String printPeakInfo = "";
     String printDate = "";
     PeaksAdapter adapter;
-    boolean isImageFitToScreen;
 
     public PeaksAdapter(Context context, int resource, List<Peak> items){
         super(context, resource, items);
@@ -147,8 +146,6 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
                     }
                 });
 
-
-
                 bottomDialog.show();
                 return true;
             }
@@ -169,7 +166,6 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
                 i.putExtras(bundle);
 
                 context.startActivity(i);
-
             }
         });
 

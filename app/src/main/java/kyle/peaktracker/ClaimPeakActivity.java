@@ -54,6 +54,7 @@ public class ClaimPeakActivity extends AppCompatActivity {
     SharePhoto sharePhoto;
     CallbackManager callbackManager;
     byte[] imageSaved;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
