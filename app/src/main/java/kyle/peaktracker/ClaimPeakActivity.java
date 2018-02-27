@@ -62,6 +62,8 @@ public class ClaimPeakActivity extends AppCompatActivity {
     ImageView testView;
     ShareButton fbShareButton;
     Bitmap selectedImage;
+    Bitmap selectedImageScaled;
+    Bitmap shareImage;
     SharePhoto sharePhoto;
     CallbackManager callbackManager;
     ShareDialog shareDialog = new ShareDialog(this);
@@ -109,7 +111,7 @@ public class ClaimPeakActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                sharePhoto = new SharePhoto.Builder()
-                        .setBitmap(selectedImage).build();
+                        .setBitmap(shareImage).build();
 
                 ShareContent shareContent = new ShareMediaContent.Builder()
                         .addMedium(sharePhoto).build();
@@ -185,8 +187,9 @@ public class ClaimPeakActivity extends AppCompatActivity {
         super.onActivityResult(reqCode, resultCode, data);
         if(reqCode == 2){
             if(resultCode == RESULT_OK) {
+                //Get image from gallery
                 try {
-
+                    //Check for permission to read external storage
                     if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                             != PackageManager.PERMISSION_GRANTED) {
 
@@ -203,9 +206,6 @@ public class ClaimPeakActivity extends AppCompatActivity {
 
                         return;
                     }
-
-
-
 
                     final Uri imageUri = data.getData();
                     final InputStream imageStream = getContentResolver().openInputStream(imageUri);
@@ -231,15 +231,11 @@ public class ClaimPeakActivity extends AppCompatActivity {
 
                     if(orientation == 6){
                         matrix.setRotate(90);
+                        shareImage = Bitmap.createBitmap(selectedImage, 0, 0, width, height, matrix, false);
                     }
 
-                    Bitmap selectedImageScaled = getResizedBitmap(selectedImage, height / 5, width / 5, matrix);
-                    //Bitmap selectedImageScaled = Bitmap.createScaledBitmap(selectedImage, width/10, height/10, true);
-//                    Log.d("SELECTED SIZE", Integer.toString(selectedImage.getByteCount()));
-//                    Log.d("SELECTED SCALED SIZE", Integer.toString(selectedImageScaled.getByteCount()));
+                    selectedImageScaled = getResizedBitmap(selectedImage, height / 5, width / 5, matrix);
 
-
-                    //Log.d("ORIENTATION", "MESSAGE " + path);
                     fbShareButton.setEnabled(true);
 
                     imageSaved = getBitmapAsByteArray(selectedImageScaled);
@@ -271,13 +267,10 @@ public class ClaimPeakActivity extends AppCompatActivity {
     {
         int width = bm.getWidth();
         int height = bm.getHeight();
-//        Log.d("IMAGE WIDTH", Integer.toString(width));
-//        Log.d("IMAGE HEIGHT", Integer.toString(height));
+
         float scaleWidth = ((float) newWidth) / width;
         float scaleHeight = ((float) newHeight) / height;
         // create a matrix for the manipulation
-
-       // m.preScale(1.0f, -1.0f);
 
         // resize the bit map
         m.postScale(scaleWidth, scaleHeight);
