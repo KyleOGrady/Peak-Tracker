@@ -8,12 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
-
-import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.provider.BlockedNumberContract.BlockedNumbers.COLUMN_ID;
 
 public class DatabaseAccess {
 
@@ -33,17 +29,13 @@ public class DatabaseAccess {
         return instance;
     }
 
-    /**
-     * Open the database connection.
-     */
+   //Open the database connection
     public void open() {
         this.database = openHelper.getWritableDatabase();
         Log.d("DATABASE ACCESS", "opened database");
     }
 
-    /**
-     * Close the database connection.
-     */
+    //Close the database connection
     public void close() {
         if (database != null) {
             this.database.close();
@@ -51,19 +43,6 @@ public class DatabaseAccess {
         }
     }
 
-    public String databaseToString(){
-        String dbString = "";
-        String query = "SELECT * FROM " + TABLE_ADK + " WHERE 1";
-
-        Cursor c = database.rawQuery(query, null);
-
-        c.moveToFirst();
-
-        dbString += c.getString(c.getColumnIndex("_name"));
-
-        c.close(); //Added
-        return dbString;
-    }
 
     public double calculate_completion(String tableName){
 
@@ -103,6 +82,7 @@ public class DatabaseAccess {
         return perc;
     }
 
+    //Returns a list of peak objects, taken from the specified table in the database
     public List<Peak> populatePeaks(String tableName, String orderBy){
         List<Peak> peaksList = new ArrayList<>();
         String query;
@@ -167,6 +147,7 @@ public class DatabaseAccess {
         return peaksList;
     }
 
+   //Marks a peak as climbed, and inserts the date, comments, and image for that claim
     public void claimPeak(String peakName, String date, String comments, byte[] image, String tableName){
 
         insert_image(tableName, peakName, image);
@@ -177,6 +158,7 @@ public class DatabaseAccess {
         database.execSQL(query);
     }
 
+    //Used in the claimPeak function, to insert an image into the database
     public void insert_image(String tableName, String peakName, byte[] image){
         ContentValues cv = new ContentValues();
         cv.put("_image", image);
@@ -184,6 +166,7 @@ public class DatabaseAccess {
         database.update(tableName, cv, "_name=?", whereArgs);
     }
 
+    //Unused?
     public Bitmap query_image(String tableName, String peakName){
         String query = "SELECT _image FROM " + tableName + " WHERE _name='" + peakName + "';";
 
@@ -196,6 +179,5 @@ public class DatabaseAccess {
 
         return image;
     }
-
 
 }

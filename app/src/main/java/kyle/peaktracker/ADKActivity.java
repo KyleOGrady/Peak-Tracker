@@ -1,27 +1,15 @@
 package kyle.peaktracker;
 
-import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Space;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +18,7 @@ public class ADKActivity extends AppCompatActivity {
     ListView peaksListView;
     public List<Peak> peaksList = new ArrayList<>();
     public List<String> sortBy = new ArrayList<>();
-   //List<String> peaksToLayout = new ArrayList<>();
+
     PeaksAdapter adapter;
     final DatabaseAccess access = DatabaseAccess.getInstance(this);
     Button claimPeak;
@@ -42,7 +30,6 @@ public class ADKActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adk);
-       // final DatabaseAccess access = DatabaseAccess.getInstance(this);
 
         header = (TextView)findViewById(R.id.adkHeader);
         Typeface noir = Typeface.createFromAsset(getAssets(), "fonts/NoirStd-Regular.ttf");
@@ -64,7 +51,6 @@ public class ADKActivity extends AppCompatActivity {
 
         access.open();
         peaksListView = (ListView)findViewById(R.id.adk_peak_list);
-       //peaksList = access.populatePeaks("adk_peaks", "_name");
         access.close();
 
         adapter = new PeaksAdapter(this, R.layout.activity_peak_listview, peaksList);
@@ -91,19 +77,6 @@ public class ADKActivity extends AppCompatActivity {
                     sortBy = "_climbed";
 
                     sortByTextview.setText("Sort by Climbed");
-//                    DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
-//                    float dp = sortByTextview.getMeasuredWidth() / (metrics.densityDpi / 160f);
-//                    dp += 105; //Add dp for wider textview
-//
-//                    Log.d("WIDTH STANDARD", Integer.toString(sortByTextview.getMeasuredWidth()));
-//                    Log.d("WIDTH IN DP", Float.toString(dp));
-//                    float px = dp * (metrics.densityDpi / 160f);
-//                    Log.d("WIDTH IN PX", Float.toString(px));
-
-//                    ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) sortByTextview.getLayoutParams();
-//                    params.height = Math.round(px);
-//                    sortByTextview.setLayoutParams(params);
-
                     Log.d("WIDTH AFTER CHANGE", Integer.toString(sortByTextview.getMeasuredWidth()));
                 } else if(sortBySpinner.getSelectedItem().toString().equals("Date Climbed")){
                     sortBy = "_date";
@@ -113,17 +86,13 @@ public class ADKActivity extends AppCompatActivity {
                 }
 
                 sort(sortBy);
-
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
                 // Do nothing
             }
-
         });
-
-
     }
 
     protected void onResume() {

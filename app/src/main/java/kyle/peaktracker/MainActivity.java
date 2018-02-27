@@ -1,7 +1,6 @@
 package kyle.peaktracker;
 
-import android.content.Intent;
-import android.database.SQLException;
+import android.content.Intent;;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,11 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import java.text.DecimalFormat;
 import android.widget.TextView;
-
-import java.io.IOException;
-import java.text.NumberFormat;
-import java.util.List;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 

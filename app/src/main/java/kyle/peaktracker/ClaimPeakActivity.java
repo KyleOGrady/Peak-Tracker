@@ -1,12 +1,9 @@
 package kyle.peaktracker;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.ContentUris;
 import android.content.Context;
-import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -20,33 +17,23 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.provider.Settings;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
-
 import com.facebook.CallbackManager;
-import com.facebook.FacebookSdk;
 import com.facebook.share.model.ShareContent;
-import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.model.ShareMediaContent;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.widget.ShareButton;
 import com.facebook.share.widget.ShareDialog;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -66,7 +53,6 @@ public class ClaimPeakActivity extends AppCompatActivity {
     Bitmap shareImage;
     SharePhoto sharePhoto;
     CallbackManager callbackManager;
-    ShareDialog shareDialog = new ShareDialog(this);
     byte[] imageSaved;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,10 +185,7 @@ public class ClaimPeakActivity extends AppCompatActivity {
                             // Explain to the user why we need to read the contacts
                         }
 
-                        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1000);
-
-                        // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
-                        // app-defined int constant that should be quite unique
+                        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1000); //Not sure what this request code means but it works
 
                         return;
                     }

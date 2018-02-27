@@ -88,7 +88,6 @@ public class Peak {
     }
 
     //Methods
-
     public String toString(){
         String printPeak =  _name + " " + _height;
         return printPeak;
