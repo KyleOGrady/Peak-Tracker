@@ -21,7 +21,6 @@ public class ADKActivity extends AppCompatActivity {
 
     PeaksAdapter adapter;
     final DatabaseAccess access = DatabaseAccess.getInstance(this);
-    Button claimPeak;
     TextView header;
     Spinner sortBySpinner;
     TextView sortByTextview;

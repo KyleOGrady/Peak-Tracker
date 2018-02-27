@@ -1,5 +1,6 @@
 package kyle.peaktracker;
 
+import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
@@ -13,7 +14,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.List;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -26,6 +30,7 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
     String printPeakInfo = "";
     String printDate = "";
     PeaksAdapter adapter;
+    boolean isImageFitToScreen;
 
     public PeaksAdapter(Context context, int resource, List<Peak> items){
         super(context, resource, items);
@@ -92,15 +97,57 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
                 name.setTypeface(cabin_semiBold);
                 height_climbed.setTypeface(cabin_reg);
                 comments.setTypeface(cabin_italic);
-                ImageView image = bottomDialog.findViewById(R.id.uploaded_image);
+                final ImageView image = bottomDialog.findViewById(R.id.uploaded_image);
+
+                //Testing to see if there is an image to display
+                if(getItem(position).get_image() == null){
+                    //do nothing
+                    Log.d("BOTTOM SHEET IMAGE", "Image is null");
+                } else{
+                    image.setVisibility(VISIBLE);
+                    Log.d("BOTTOM SHEET IMAGE", "Image exists");
+                }
 
                 //Setting text for textfields
                 name.setText(getItem(position).get_name());
-                String height_climbed_text = getItem(position).get_height() + "' | Climbed on " + getItem(position).get_date();
+                String height_climbed_text;
+
+                if(getItem(position).get_date() == null){ //Hasn't been climbed yet
+                    height_climbed_text = getItem(position).get_height() + "' | Not Yet Climbed";
+                } else { //Has been climbed
+                    height_climbed_text = getItem(position).get_height() + "' | Climbed on " + getItem(position).get_date();
+                }
+
                 height_climbed.setText(height_climbed_text);
                 comments.setText(getItem(position).get_comments());
 
                 image.setImageBitmap(getItem(position).get_image());
+
+                //Fullscreen image on click
+                image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Log.d("IMAGE CLICKED", "IMAGE CLICKED");
+
+                        final Dialog fullScreenDialog = new Dialog(context, R.style.FullScreenDialogTheme);
+                        fullScreenDialog.setContentView(R.layout.activity_full_screen_image);
+
+                        ImageView fullScreenImage = (ImageView)fullScreenDialog.findViewById(R.id.fullScreenImage);
+                        fullScreenImage.setImageBitmap(getItem(position).get_image());
+
+                        //Close the image on click
+                        fullScreenImage.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                               fullScreenDialog.dismiss();
+                            }
+                        });
+
+                        fullScreenDialog.show();
+                    }
+                });
+
+
 
                 bottomDialog.show();
                 return true;

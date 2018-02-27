@@ -113,13 +113,13 @@ public class DatabaseAccess {
                         temp.set_climbed(c.getString(i));
                         Log.d("SET OBJECT", "Setting climbed to " + c.getString(i));
                         break;
-                    case 4: //DATE
-                        temp.set_date(c.getString(i));
-                        Log.d("SET OBJECT", "Setting date to " + c.getString(i));
-                        break;
-                    case 5: //LIST
+                    case 4: //LIST
                         temp.set_list(c.getString(i));
                         Log.d("SET OBJECT", "Setting list to " + c.getString(i));
+                        break;
+                    case 5: //DATE
+                        temp.set_date(c.getString(i));
+                        Log.d("SET OBJECT", "Setting date to " + c.getString(i));
                         break;
                     case 6: //COMMENTS
                         temp.set_comments(c.getString(i));

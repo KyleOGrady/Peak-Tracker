@@ -8,8 +8,8 @@ public class Peak {
     private String _name;
     private int _height;
     private String _climbed;
-    private String _date;
     private String _list;
+    private String _date;
     private String _comments;
     private Bitmap _image;
 
@@ -38,12 +38,12 @@ public class Peak {
         this._climbed = _climbed;
     }
 
-    public void set_date(String _date){
-        this._date = _date;
-    }
-
     public void set_list(String _list){
         this._list = _list;
+    }
+
+    public void set_date(String _date){
+        this._date = _date;
     }
 
     public void set_comments(String _comments){
@@ -71,12 +71,12 @@ public class Peak {
         return _climbed;
     }
 
-    public String get_date(){
-        return _date;
-    }
-
     public String get_list(){
         return _list;
+    }
+
+    public String get_date(){
+        return _date;
     }
 
     public String get_comments() {

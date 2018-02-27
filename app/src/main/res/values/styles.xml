@@ -29,4 +29,6 @@
         <item name="colorAccent">@color/celeryGreen </item>
     </style>
 
+    <style name="FullScreenDialogTheme" parent="android:Theme.Material.NoActionBar.Fullscreen"/>
+
 </resources>
