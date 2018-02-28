@@ -216,6 +216,8 @@ public class ClaimPeakActivity extends AppCompatActivity {
                     if(orientation == 6){
                         matrix.setRotate(90);
                         shareImage = Bitmap.createBitmap(selectedImage, 0, 0, width, height, matrix, false);
+                    } else {
+                        shareImage = selectedImage;
                     }
 
                     selectedImageScaled = getResizedBitmap(selectedImage, height / 5, width / 5, matrix);
