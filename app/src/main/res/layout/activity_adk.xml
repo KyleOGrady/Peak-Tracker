@@ -41,7 +41,10 @@
         android:id="@+id/adk_peak_list"
         android:background="@color/peacockBlue"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:fastScrollEnabled="true"
+        android:persistentDrawingCache="scrolling"
+        android:scrollingCache="false"
         android:layout_weight="3"/>
 
 </LinearLayout>

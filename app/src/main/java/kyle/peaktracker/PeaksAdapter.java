@@ -2,6 +2,7 @@ package kyle.peaktracker;
 
 import android.app.Dialog;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
 import android.content.Context;
@@ -15,9 +16,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.graphics.Matrix;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.List;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -52,17 +53,29 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
         Log.d("HOLDER INFO TEXT", holder.info.getText().toString());
         holder.info.setTypeface(noir);
 
-        holder.dateClimbed = convertView.findViewById(R.id.climbed_date);
-        holder.dateClimbed.setVisibility(GONE);
+        //Claimed layout
+        holder.claimedLayout = convertView.findViewById(R.id.claimedLayout);
+        //Date Climbed
+          holder.dateClimbed = convertView.findViewById(R.id.climbed_date);
+        //Climbed image
+          holder.climbedImage = convertView.findViewById(R.id.climbed_image);
 
+        //Claim Button
         holder.claimPeak = convertView.findViewById(R.id.peak_claimPeak);
         holder.claimPeak.setVisibility(GONE);
 
-        if(getItem(position).get_climbed().equals("N")){
+        if(getItem(position).get_climbed().equals("N")){  //Has not been climbed, set background to brown, display claim button
             convertView.setBackgroundResource(R.color.peakBrown);
             holder.claimPeak.setVisibility(VISIBLE);
-        }else{
-            holder.dateClimbed.setVisibility(VISIBLE);
+        } else { //Has been climbed, display claimed information
+            holder.claimedLayout.setVisibility(VISIBLE);
+
+            Bitmap set = BitmapFactory.decodeResource(context.getResources(),
+                    R.drawable.claimed);
+            int width = set.getWidth();
+            int height = set.getHeight();
+            Bitmap resized = getResizedBitmap(set, height/5, width/5);
+            holder.climbedImage.setImageBitmap(resized);
         }
 
         convertView.setTag(holder);
@@ -71,7 +84,8 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
 
         printPeakInfo = getItem(position).get_name() + " " + getItem(position).get_height() + "'";
 
-        printDate = "Climbed on " + "\n" + getItem(position).get_date();
+        printDate = "Climbed on " + getItem(position).get_date();
+        Log.d("CLIMBED INFO", printDate);
         mainPeakHolder.info.setText(printPeakInfo);
         mainPeakHolder.dateClimbed.setText(printDate);
 
@@ -174,8 +188,27 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
 
     public static class PeakHolder {
         TextView info;
+        LinearLayout claimedLayout;
+        ImageView climbedImage;
         TextView dateClimbed;
         Button claimPeak;
     }
+
+    public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // create a matrix for the manipulation
+        Matrix m = new Matrix();
+        // resize the bit map
+        m.postScale(scaleWidth, scaleHeight);
+        // recreate the new Bitmap
+        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, m, false);
+        return resizedBitmap;
+    }
+
+
 
 }

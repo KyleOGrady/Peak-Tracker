@@ -249,8 +249,7 @@ public class ClaimPeakActivity extends AppCompatActivity {
         return outputStream.toByteArray();
     }
 
-    public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth, Matrix m)
-    {
+    public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth, Matrix m) {
         int width = bm.getWidth();
         int height = bm.getHeight();
 
