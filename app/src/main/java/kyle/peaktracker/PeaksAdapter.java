@@ -54,11 +54,13 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
         holder.info.setTypeface(noir);
 
         //Claimed layout
-        holder.claimedLayout = convertView.findViewById(R.id.claimedLayout);
+//        holder.claimedLayout = convertView.findViewById(R.id.claimedLayout);
+//        holder.claimedLayout.setVisibility(GONE);
         //Date Climbed
-          holder.dateClimbed = convertView.findViewById(R.id.climbed_date);
+          //holder.dateClimbed = convertView.findViewById(R.id.climbed_date);
         //Climbed image
-          holder.climbedImage = convertView.findViewById(R.id.climbed_image);
+        holder.climbedImage = convertView.findViewById(R.id.climbed_image);
+       // holder.climbedImage.setVisibility(GONE);
 
         //Claim Button
         holder.claimPeak = convertView.findViewById(R.id.peak_claimPeak);
@@ -68,13 +70,14 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
             convertView.setBackgroundResource(R.color.peakBrown);
             holder.claimPeak.setVisibility(VISIBLE);
         } else { //Has been climbed, display claimed information
-            holder.claimedLayout.setVisibility(VISIBLE);
+          //  holder.claimedLayout.setVisibility(VISIBLE);
 
+            holder.climbedImage.setVisibility(VISIBLE);
             Bitmap set = BitmapFactory.decodeResource(context.getResources(),
-                    R.drawable.claimed);
+                    R.drawable.yes6);
             int width = set.getWidth();
             int height = set.getHeight();
-            Bitmap resized = getResizedBitmap(set, height/5, width/5);
+            Bitmap resized = getResizedBitmap(set, height/10, width/10);
             holder.climbedImage.setImageBitmap(resized);
         }
 
@@ -87,7 +90,7 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
         printDate = "Climbed on " + getItem(position).get_date();
         Log.d("CLIMBED INFO", printDate);
         mainPeakHolder.info.setText(printPeakInfo);
-        mainPeakHolder.dateClimbed.setText(printDate);
+//        mainPeakHolder.dateClimbed.setText(printDate);
 
         //Bring up bottom dialog
         holder.info.setOnLongClickListener(new View.OnLongClickListener() { //list is my listView
@@ -159,7 +162,6 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
                         fullScreenDialog.show();
                     }
                 });
-
                 bottomDialog.show();
                 return true;
             }
