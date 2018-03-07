@@ -22,6 +22,7 @@ import android.widget.Toast;
 import java.util.List;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static java.lang.Thread.sleep;
 
 public class PeaksAdapter extends ArrayAdapter<Peak>{
 
@@ -53,11 +54,6 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
         Log.d("HOLDER INFO TEXT", holder.info.getText().toString());
         holder.info.setTypeface(noir);
 
-        //Claimed layout
-//        holder.claimedLayout = convertView.findViewById(R.id.claimedLayout);
-//        holder.claimedLayout.setVisibility(GONE);
-        //Date Climbed
-          //holder.dateClimbed = convertView.findViewById(R.id.climbed_date);
         //Climbed image
         holder.climbedImage = convertView.findViewById(R.id.climbed_image);
        // holder.climbedImage.setVisibility(GONE);
@@ -69,9 +65,7 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
         if(getItem(position).get_climbed().equals("N")){  //Has not been climbed, set background to brown, display claim button
             convertView.setBackgroundResource(R.color.peakBrown);
             holder.claimPeak.setVisibility(VISIBLE);
-        } else { //Has been climbed, display claimed information
-          //  holder.claimedLayout.setVisibility(VISIBLE);
-
+        } else {  //Has been climbed, display claimed information
             holder.climbedImage.setVisibility(VISIBLE);
             Bitmap set = BitmapFactory.decodeResource(context.getResources(),
                     R.drawable.yes6);
@@ -155,7 +149,7 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
                         fullScreenImage.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                               fullScreenDialog.dismiss();
+                                fullScreenDialog.dismiss();
                             }
                         });
 
@@ -190,9 +184,8 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
 
     public static class PeakHolder {
         TextView info;
-        LinearLayout claimedLayout;
         ImageView climbedImage;
-        TextView dateClimbed;
+        //TextView dateClimbed;
         Button claimPeak;
     }
 
