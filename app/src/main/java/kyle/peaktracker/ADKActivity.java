@@ -42,7 +42,6 @@ public class ADKActivity extends AppCompatActivity {
         sortBy.add("Height");
         sortBy.add("Climbed/Not Climbed");
         sortBy.add("Date Climbed");
-        sortByTextview.setText("Sort By Name");
 
         SortAdapter dataAdapter = new SortAdapter(this, R.layout.custom_spinner_item, sortBy);
 

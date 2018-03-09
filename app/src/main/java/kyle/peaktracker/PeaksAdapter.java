@@ -137,7 +137,6 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
                 image.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //Log.d("IMAGE CLICKED", "IMAGE CLICKED");
 
                         final Dialog fullScreenDialog = new Dialog(context, R.style.FullScreenDialogTheme);
                         fullScreenDialog.setContentView(R.layout.activity_full_screen_image);

@@ -2,6 +2,7 @@ package kyle.peaktracker;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -67,45 +69,25 @@ public class ClaimPeakActivity extends AppCompatActivity {
         final String peakName = bundle.getString("PEAK NAME");
         final String tableName = bundle.getString("TABLE NAME");
 
-        //Items on dialog
-        TextView claimPeak = (TextView)findViewById(R.id.claimPeakHeader);
-        ImageButton submitClaim = (ImageButton)findViewById(R.id.submitClaim);
-        ImageButton uploadImage = (ImageButton)findViewById(R.id.upload_image);
-        final EditText selectDate = (EditText)findViewById(R.id.selectDate);
-        final EditText enterComments = (EditText)findViewById(R.id.enterComments);
+
+        //Items on Claim dialog
+        TextView claimPeak = findViewById(R.id.claimPeakHeader);
+        ImageButton submitClaim = findViewById(R.id.submitClaim);
+        ImageButton uploadImage = findViewById(R.id.upload_image);
+        final EditText selectDate = findViewById(R.id.selectDate);
+        final EditText enterComments = findViewById(R.id.enterComments);
         testView = (ImageView)findViewById(R.id.test_view);
 
-        int c = enterComments.getCurrentHintTextColor();
-        Log.d("HINT COLOR", String.format("%X", c));
-
-        //Date Picking logic
-        final Calendar myCalendar = Calendar.getInstance();
-        final DatePickerDialog.OnDateSetListener date;
-
-        fbShareButton = (ShareButton) findViewById(R.id.share_btn);
-        //Setting typefaces for each element in the layout
+        //Setting typefaces for each element in the Claim layout
         Typeface cabin_semiBold = Typeface.createFromAsset(getAssets(),"fonts/Cabin-SemiBold.ttf");
         Typeface cabin_regular = Typeface.createFromAsset(getAssets(),"fonts/Cabin-Regular.ttf");
         claimPeak.setTypeface(cabin_semiBold);
         selectDate.setTypeface(cabin_regular);
         enterComments.setTypeface(cabin_regular);
 
-        fbShareButton.setEnabled(false);
-
-        fbShareButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-               sharePhoto = new SharePhoto.Builder()
-                        .setBitmap(shareImage).build();
-
-                ShareContent shareContent = new ShareMediaContent.Builder()
-                        .addMedium(sharePhoto).build();
-                fbShareButton.setShareContent(shareContent);
-
-            }
-        });
+        //Date Picking logic
+        final Calendar myCalendar = Calendar.getInstance();
+        final DatePickerDialog.OnDateSetListener date;
 
         date = new DatePickerDialog.OnDateSetListener() {
 
@@ -154,7 +136,7 @@ public class ClaimPeakActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if(selectDate.getText().toString().equals("") || enterComments.getText().toString().equals("")){
-                    Toast.makeText(getBaseContext(), "Enter some comments and select and date.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), "Enter some comments and select a date.", Toast.LENGTH_LONG).show();
                 } else{
                     String date = selectDate.getText().toString();
                     String comments = enterComments.getText().toString();
@@ -163,10 +145,48 @@ public class ClaimPeakActivity extends AppCompatActivity {
                     access.claimPeak(peakName, date, comments, imageSaved, tableName);
                     access.close();
 
-                    finish();
+                    setContentView(R.layout.congrats_layout);
+
+                    //Items on Congrats layout
+                    fbShareButton = findViewById(R.id.shareButton);
+                    final TextView congrats = findViewById(R.id.congratsHeader);
+                    final Button noThanks = findViewById(R.id.noThanks);
+                    ;
+
+                    noThanks.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            finish();
+                        }
+                    });
+
+                    int width = shareImage.getWidth();
+                    int height = shareImage.getHeight();
+
+                    Log.d("IMAGE WIDTH", Integer.toString(width));
+                    Log.d("IMAGE HEIGHT", Integer.toString(height));
+                    fbShareButton.setEnabled(true);
+                    fbShareButton.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+
+                            sharePhoto = new SharePhoto.Builder()
+                                    .setBitmap(shareImage).build();
+
+                            ShareContent shareContent = new ShareMediaContent.Builder()
+                                    .addMedium(sharePhoto).build();
+                            fbShareButton.setShareContent(shareContent);
+
+                        }
+                    });
+
                 }
             }
         });
+
+
     }
 
     @Override
@@ -221,8 +241,6 @@ public class ClaimPeakActivity extends AppCompatActivity {
                     }
 
                     selectedImageScaled = getResizedBitmap(selectedImage, height / 5, width / 5, matrix);
-
-                    fbShareButton.setEnabled(true);
 
                     imageSaved = getBitmapAsByteArray(selectedImageScaled);
 
