@@ -15,10 +15,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.graphics.Matrix;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import java.util.List;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -29,6 +28,7 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
     private List <Peak> items;
     private int resource;
     private Context context;
+    private Typeface font;
     String printPeakInfo = "";
     String printDate = "";
     PeaksAdapter adapter;
@@ -84,79 +84,89 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
         printDate = "Climbed on " + getItem(position).get_date();
         Log.d("CLIMBED INFO", printDate);
         mainPeakHolder.info.setText(printPeakInfo);
-//        mainPeakHolder.dateClimbed.setText(printDate);
 
         //Bring up bottom dialog
-        holder.info.setOnLongClickListener(new View.OnLongClickListener() { //list is my listView
+        holder.info.setOnLongClickListener(new View.OnLongClickListener() {
 
             @Override
             public boolean onLongClick(View v) {
 
                 Log.d("TEST HOLD", "HELD");
-                BottomSheetDialog bottomDialog = new BottomSheetDialog(context);
-                bottomDialog.setContentView(R.layout.bottom_sheet_layout);
-                //Setting items on screen
-                TextView name = bottomDialog.findViewById(R.id.name);
-                TextView height_climbed = bottomDialog.findViewById(R.id.height_climbed);
-                TextView comments = bottomDialog.findViewById(R.id.comments);
 
-                Typeface cabin_reg = Typeface.createFromAsset(context.getAssets(),"fonts/Cabin-Regular.ttf");
-                Typeface cabin_italic = Typeface.createFromAsset(context.getAssets(),"fonts/Cabin-Italic.ttf");
-                Typeface cabin_semiBold = Typeface.createFromAsset(context.getAssets(),"fonts/Cabin-SemiBold.ttf");
+                Intent i = new Intent(context, ViewClaimInfoActivity.class);
+                String peakName = getItem(position).get_name();
+                String tableName = getItem(position).get_list();
+                Bundle bundle = new Bundle();
+                bundle.putString("PEAK NAME", peakName);
+                bundle.putString("TABLE NAME", tableName);
+                i.putExtras(bundle);
 
-                name.setTypeface(cabin_semiBold);
-                height_climbed.setTypeface(cabin_reg);
-                comments.setTypeface(cabin_italic);
-                final ImageView image = bottomDialog.findViewById(R.id.uploaded_image);
+                context.startActivity(i);
 
-                //Testing to see if there is an image to display
-                if(getItem(position).get_image() == null){
-                    //do nothing
-                    Log.d("BOTTOM SHEET IMAGE", "Image is null");
-                } else{
-                    image.setVisibility(VISIBLE);
-                    Log.d("BOTTOM SHEET IMAGE", "Image exists");
-                }
-
-                //Setting text for textfields
-                name.setText(getItem(position).get_name());
-                String height_climbed_text;
-
-                if(getItem(position).get_date() == null){ //Hasn't been climbed yet
-                    height_climbed_text = getItem(position).get_height() + "' | Not Yet Climbed";
-                } else { //Has been climbed
-                    height_climbed_text = getItem(position).get_height() + "' | Climbed on " + getItem(position).get_date();
-                }
-
-                height_climbed.setText(height_climbed_text);
-                comments.setText(getItem(position).get_comments());
-
-                image.setImageBitmap(getItem(position).get_image());
-
-                //Fullscreen image on click
-                image.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        final Dialog fullScreenDialog = new Dialog(context, R.style.FullScreenDialogTheme);
-                        fullScreenDialog.setContentView(R.layout.activity_full_screen_image);
-
-                        ImageView fullScreenImage = (ImageView)fullScreenDialog.findViewById(R.id.fullScreenImage);
-                        fullScreenImage.setImageBitmap(getItem(position).get_image());
-
-                        //Close the image on click
-                        fullScreenImage.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                fullScreenDialog.dismiss();
-                            }
-                        });
-
-                        fullScreenDialog.show();
-                    }
-                });
-                bottomDialog.show();
-                return true;
+//                BottomSheetDialog bottomDialog = new BottomSheetDialog(context);
+//                bottomDialog.setContentView(R.layout.view_claim_info_layout);
+//                //Setting items on screen
+//                TextView name = bottomDialog.findViewById(R.id.name);
+//                TextView height_climbed = bottomDialog.findViewById(R.id.height_climbed);
+//                TextView comments = bottomDialog.findViewById(R.id.comments);
+//
+//                Typeface cabin_reg = Typeface.createFromAsset(context.getAssets(),"fonts/Cabin-Regular.ttf");
+//                Typeface cabin_italic = Typeface.createFromAsset(context.getAssets(),"fonts/Cabin-Italic.ttf");
+//                Typeface cabin_semiBold = Typeface.createFromAsset(context.getAssets(),"fonts/Cabin-SemiBold.ttf");
+//
+//                name.setTypeface(cabin_semiBold);
+//                height_climbed.setTypeface(cabin_reg);
+//                comments.setTypeface(cabin_italic);
+//                final ImageView image = bottomDialog.findViewById(R.id.uploaded_image);
+//
+//                //Testing to see if there is an image to display
+//                if(getItem(position).get_image() == null){
+//                    //do nothing
+//                    Log.d("BOTTOM SHEET IMAGE", "Image is null");
+//                } else{
+//                    image.setVisibility(VISIBLE);
+//                    Log.d("BOTTOM SHEET IMAGE", "Image exists");
+//                }
+//
+//                //Setting text for textfields
+//                name.setText(getItem(position).get_name());
+//                String height_climbed_text;
+//
+//                if(getItem(position).get_date() == null){ //Hasn't been climbed yet
+//                    height_climbed_text = getItem(position).get_height() + "' | Not Yet Climbed";
+//                } else { //Has been climbed
+//                    height_climbed_text = getItem(position).get_height() + "' | Climbed on " + getItem(position).get_date();
+//                }
+//
+//                height_climbed.setText(height_climbed_text);
+//                comments.setText(getItem(position).get_comments());
+//
+//                image.setImageBitmap(getItem(position).get_image());
+//
+//                //Fullscreen image on click
+//                image.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                        final Dialog fullScreenDialog = new Dialog(context, R.style.FullScreenDialogTheme);
+//                        fullScreenDialog.setContentView(R.layout.activity_full_screen_image);
+//
+//                        ImageView fullScreenImage = (ImageView)fullScreenDialog.findViewById(R.id.fullScreenImage);
+//                        fullScreenImage.setImageBitmap(getItem(position).get_image());
+//
+//                        //Close the image on click
+//                        fullScreenImage.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                fullScreenDialog.dismiss();
+//                            }
+//                        });
+//
+//                        fullScreenDialog.show();
+//                    }
+//                });
+//                bottomDialog.show();
+                  return true;
             }
         });
 
