@@ -21,6 +21,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -36,6 +37,9 @@ import com.facebook.share.model.ShareMediaContent;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.widget.ShareButton;
 import com.facebook.share.widget.ShareDialog;
+
+import org.w3c.dom.Text;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -61,6 +65,7 @@ public class ClaimPeakActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+        setFinishOnTouchOutside(false);
         setContentView(R.layout.activity_claim_peak);
 
         callbackManager = CallbackManager.Factory.create();
@@ -79,8 +84,8 @@ public class ClaimPeakActivity extends AppCompatActivity {
         testView = (ImageView)findViewById(R.id.test_view);
 
         //Setting typefaces for each element in the Claim layout
-        Typeface cabin_semiBold = Typeface.createFromAsset(getAssets(),"fonts/Cabin-SemiBold.ttf");
-        Typeface cabin_regular = Typeface.createFromAsset(getAssets(),"fonts/Cabin-Regular.ttf");
+        final Typeface cabin_semiBold = Typeface.createFromAsset(getAssets(),"fonts/Cabin-SemiBold.ttf");
+        final Typeface cabin_regular = Typeface.createFromAsset(getAssets(),"fonts/Cabin-Regular.ttf");
         claimPeak.setTypeface(cabin_semiBold);
         selectDate.setTypeface(cabin_regular);
         enterComments.setTypeface(cabin_regular);
@@ -150,14 +155,17 @@ public class ClaimPeakActivity extends AppCompatActivity {
                     //Items on Congrats layout
                     fbShareButton = findViewById(R.id.shareButton);
                     final TextView congrats = findViewById(R.id.congratsHeader);
+                    final TextView shareText = findViewById(R.id.shareOnFacebook);
                     final Button noThanks = findViewById(R.id.noThanks);
-                    ;
+
+                    congrats.setTypeface(cabin_semiBold);
+                    shareText.setTypeface(cabin_regular);
 
                     noThanks.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
 
-                            finish();
+                            finish(); //Close the activity
                         }
                     });
 
@@ -179,13 +187,13 @@ public class ClaimPeakActivity extends AppCompatActivity {
                                     .addMedium(sharePhoto).build();
                             fbShareButton.setShareContent(shareContent);
 
+                            finish(); //Close the activity
                         }
                     });
 
                 }
             }
         });
-
 
     }
 

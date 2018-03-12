@@ -2,37 +2,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:background="@color/peacockBlue">
 
     <TextView
         android:id="@+id/congratsHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Congradulations" />
+        android:text="Congradulations!"
+        android:textColor="@color/lightBlue"
+        android:textSize="30sp"
+        android:layout_marginBottom="10dp"/>
 
     <TextView
         android:id="@+id/shareOnFacebook"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/lightBlue"
+        android:textSize="15dp"
         android:text="Would You Like to Share Your Photo and Achievement on Facebook?" />
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center">
 
         <com.facebook.share.widget.ShareButton
             android:id="@+id/shareButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Share Photo on Facebook"
-            android:layout_marginBottom="10dp" />
+            android:layout_height="35dp"
+            android:text="Share Photo"
+            android:gravity="center_vertical"
+            android:layout_marginRight="10dp" />
 
         <Button
             android:id="@+id/noThanks"
-            android:layout_width="match_parent"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:text="noThanks" />
+            android:text="No Thanks"
+            android:layout_marginLeft="10dp"/>
 
     </LinearLayout>
 
