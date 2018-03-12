@@ -26,8 +26,7 @@
             android:textSize="18sp"
             android:paddingLeft="6dp"
             android:paddingRight="4dp"
-            android:layout_height="match_parent"
-            android:text="Sort By Climbed" />
+            android:layout_height="match_parent" />
 
         <Spinner
             android:id="@+id/sortBySpinner"

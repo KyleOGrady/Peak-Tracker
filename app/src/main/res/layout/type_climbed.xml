@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:paddingRight="8dp"
     android:paddingLeft="8dp"
-    android:weightSum="4">
+    android:background="@color/peacockBlue"
+    android:layout_weight="4">
 
     <TextView
         android:id="@+id/peak_textView"
@@ -24,14 +25,5 @@
         android:layout_height="75dp"
         android:layout_gravity="center_vertical" />
 
-    <Button
-        android:id="@+id/peak_claimPeak"
-        android:layout_gravity="center"
-        android:focusable="false"
-        android:background="@drawable/claim_image_2"
-        android:focusableInTouchMode="false"
-        android:layout_width="95dp"
-        android:layout_height="70dp"
-        android:layout_weight="1"/>
 
 </LinearLayout>
