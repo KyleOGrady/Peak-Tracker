@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import static android.view.View.GONE;
+
 import static android.view.View.VISIBLE;
 import static java.lang.Thread.sleep;
 
@@ -82,7 +82,7 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
             if(listViewItemType == CLIMBED){
                 holder.climbedImage = convertView.findViewById(R.id.climbed_image);
                 Bitmap set = BitmapFactory.decodeResource(context.getResources(),
-                    R.drawable.yes6);
+                    R.drawable.yes);
                 int width = set.getWidth();
                 int height = set.getHeight();
                 Bitmap resized = getResizedBitmap(set, height/10, width/10);
@@ -158,7 +158,7 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
                     public void onClick(View v) {
 
                         final Dialog fullScreenDialog = new Dialog(context, R.style.FullScreenDialogTheme);
-                        fullScreenDialog.setContentView(R.layout.activity_full_screen_image);
+                        fullScreenDialog.setContentView(R.layout.full_screen_image_layout);
 
                         ImageView fullScreenImage = (ImageView)fullScreenDialog.findViewById(R.id.fullScreenImage);
                         fullScreenImage.setImageBitmap(getItem(position).get_image());

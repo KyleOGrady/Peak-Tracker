@@ -30,14 +30,14 @@ public class ADKActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adk);
 
-        header = (TextView)findViewById(R.id.adkHeader);
+        header = findViewById(R.id.adkHeader);
         Typeface noir = Typeface.createFromAsset(getAssets(), "fonts/NoirStd-Regular.ttf");
         header.setTypeface(noir);
 
         //Setting information for sort by spinner
-        sortByTextview = (TextView)findViewById(R.id.sortByTextview);
+        sortByTextview = findViewById(R.id.sortByTextview);
         sortByTextview.setTypeface(noir);
-        sortBySpinner = (Spinner) findViewById(R.id.sortBySpinner);
+        sortBySpinner = findViewById(R.id.sortBySpinner);
         sortBy.add("Name");
         sortBy.add("Height");
         sortBy.add("Climbed/Not Climbed");
@@ -48,13 +48,14 @@ public class ADKActivity extends AppCompatActivity {
         sortBySpinner.setAdapter(dataAdapter);
 
         access.open();
-        peaksListView = (ListView)findViewById(R.id.adk_peak_list);
+        peaksListView = findViewById(R.id.adk_peak_list);
         access.close();
 
         adapter = new PeaksAdapter(this, 0, peaksList);
 
         peaksListView.setAdapter(adapter);
 
+        sortByTextview.setText("Sort by Name");
         sortBySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -66,7 +67,7 @@ public class ADKActivity extends AppCompatActivity {
 
                     sortByTextview.setText("Sort by Height");
                     Log.d("WIDTH", Integer.toString(sortByTextview.getMeasuredWidth()));
-                }else if(sortBySpinner.getSelectedItem().toString().equals("Name")){
+                } else if(sortBySpinner.getSelectedItem().toString().equals("Name")){
                     sortBy = "_name";
 
                     sortByTextview.setText("Sort by Name");

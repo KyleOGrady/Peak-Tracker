@@ -140,8 +140,8 @@ public class ClaimPeakActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(selectDate.getText().toString().equals("") || enterComments.getText().toString().equals("")){
-                    Toast.makeText(getBaseContext(), "Enter some comments and select a date.", Toast.LENGTH_LONG).show();
+                if(selectDate.getText().toString().equals("") || enterComments.getText().toString().equals("") || shareImage == null){
+                    Toast.makeText(getBaseContext(), "Make sure you've entered comments, entered a date, and uploaded an image.", Toast.LENGTH_LONG).show();
                 } else{
                     String date = selectDate.getText().toString();
                     String comments = enterComments.getText().toString();
@@ -160,6 +160,7 @@ public class ClaimPeakActivity extends AppCompatActivity {
 
                     congrats.setTypeface(cabin_semiBold);
                     shareText.setTypeface(cabin_regular);
+                    noThanks.setTypeface(cabin_semiBold);
 
                     noThanks.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -190,7 +191,6 @@ public class ClaimPeakActivity extends AppCompatActivity {
                             finish(); //Close the activity
                         }
                     });
-
                 }
             }
         });

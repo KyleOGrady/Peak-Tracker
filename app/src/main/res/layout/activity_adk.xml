@@ -43,6 +43,7 @@
         android:layout_height="match_parent"
         android:persistentDrawingCache="scrolling"
         android:scrollingCache="false"
+        android:paddingBottom="27dp"
         android:layout_weight="3"/>
 
 </LinearLayout>

@@ -2,24 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="230dp"
     android:padding="10dp"
-    android:background="@color/peacockBlue">
+    android:gravity="center"
+    android:background="@drawable/adams">
 
     <TextView
         android:id="@+id/congratsHeader"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Congradulations!"
-        android:textColor="@color/lightBlue"
-        android:textSize="30sp"
-        android:layout_marginBottom="10dp"/>
+        android:layout_height="55dp"
+        android:gravity="center"
+        android:layout_marginBottom="10dp"
+        android:text="Congratulations!"
+        android:textColor="@color/yellowish"
+        android:textSize="40sp" />
 
     <TextView
         android:id="@+id/shareOnFacebook"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/lightBlue"
+        android:gravity="center"
+        android:textColor="@color/yellowish"
         android:textSize="15dp"
         android:text="Would You Like to Share Your Photo and Achievement on Facebook?" />
 
@@ -27,7 +30,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="14dp"
         android:gravity="center">
 
         <com.facebook.share.widget.ShareButton
@@ -40,8 +43,10 @@
 
         <Button
             android:id="@+id/noThanks"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
+            android:layout_width="110dp"
+            android:layout_height="32dp"
+            android:background="@color/yellowish"
+            android:textColor="@color/peacockBlue"
             android:text="No Thanks"
             android:layout_marginLeft="10dp"/>
 
