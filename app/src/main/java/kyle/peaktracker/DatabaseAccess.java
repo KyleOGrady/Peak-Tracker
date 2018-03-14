@@ -46,8 +46,17 @@ public class DatabaseAccess {
 
     public double calculate_completion(String tableName){
 
-        String query = "SELECT _climbed FROM " + tableName;
+        String query;
 
+        if(tableName.equals("ne_peaks")){
+            query = "SELECT _climbed FROM adk_peaks UNION ALL " +
+                    "SELECT _climbed FROM nh_peaks UNION ALL " +
+                    "SELECT _climbed FROM vt_peaks UNION ALL " +
+                    "SELECT _climbed FROM me_peaks UNION ALL " +
+                    "SELECT _climbed FROM catskills_peaks;";
+        }else {
+            query = "SELECT _climbed FROM " + tableName;
+        }
         Cursor c = database.rawQuery(query, null);
         String temp_compare = ""; //placeholder for N or Y
         double num_hiked = 0.0;
@@ -86,11 +95,31 @@ public class DatabaseAccess {
     public List<Peak> populatePeaks(String tableName, String orderBy){
         List<Peak> peaksList = new ArrayList<>();
         String query;
-        if(orderBy.equals("_height")){
-            query = "SELECT * FROM " + tableName + " ORDER BY " + orderBy + " desc;";
+        if(tableName.equals("ne_peaks")){
+            if(orderBy.equals("_height")){
+                query = "SELECT * FROM adk_peaks UNION " +
+                        "SELECT * FROM nh_peaks UNION " +
+                        "SELECT * FROM vt_peaks UNION " +
+                        "SELECT * FROM me_peaks UNION " +
+                        "SELECT * FROM catskills_peaks " +
+                        "ORDER BY " +  orderBy +" desc;";
+            } else {
+                query = "SELECT * FROM adk_peaks UNION " +
+                        "SELECT * FROM nh_peaks UNION " +
+                        "SELECT * FROM vt_peaks UNION " +
+                        "SELECT * FROM me_peaks UNION " +
+                        "SELECT * FROM catskills_peaks " +
+                        "ORDER BY " +  orderBy +";";
+            }
+
         }else {
-            query = "SELECT * FROM " + tableName + " ORDER BY " + orderBy + ";";
+            if (orderBy.equals("_height")) {
+                query = "SELECT * FROM " + tableName + " ORDER BY " + orderBy + " desc;";
+            } else {
+                query = "SELECT * FROM " + tableName + " ORDER BY " + orderBy + ";";
+            }
         }
+
         Cursor c = database.rawQuery(query, null);
 
         while(c.moveToNext()) {

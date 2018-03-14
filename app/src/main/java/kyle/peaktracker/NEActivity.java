@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -14,7 +13,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NHActivity extends AppCompatActivity {
+public class NEActivity extends AppCompatActivity {
 
     ListView peaksListView;
     public List<Peak> peaksList = new ArrayList<>();
@@ -29,9 +28,9 @@ public class NHActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nh);
+        setContentView(R.layout.activity_ne);
 
-        header = findViewById(R.id.nhHeader);
+        header = findViewById(R.id.neHeader);
         Typeface noir = Typeface.createFromAsset(getAssets(), "fonts/NoirStd-Regular.ttf");
         header.setTypeface(noir);
 
@@ -41,6 +40,7 @@ public class NHActivity extends AppCompatActivity {
         sortBySpinner = findViewById(R.id.sortBySpinner);
         sortBy.add("Name");
         sortBy.add("Height");
+        sortBy.add("State/Region");
         sortBy.add("Climbed/Not Climbed");
         sortBy.add("Date Climbed");
 
@@ -49,7 +49,7 @@ public class NHActivity extends AppCompatActivity {
         sortBySpinner.setAdapter(dataAdapter);
 
         access.open();
-        peaksListView = findViewById(R.id.nh_peak_list);
+        peaksListView = findViewById(R.id.ne_peak_list);
         access.close();
 
         adapter = new PeaksAdapter(this, 0, peaksList);
@@ -68,10 +68,15 @@ public class NHActivity extends AppCompatActivity {
 
                     sortByTextview.setText("Sort by Height");
                     Log.d("WIDTH", Integer.toString(sortByTextview.getMeasuredWidth()));
-                } else if(sortBySpinner.getSelectedItem().toString().equals("Name")){
+                } else if(sortBySpinner.getSelectedItem().toString().equals("Name")) {
                     sortBy = "_name";
 
                     sortByTextview.setText("Sort by Name");
+                    Log.d("WIDTH", Integer.toString(sortByTextview.getMeasuredWidth()));
+                }else if(sortBySpinner.getSelectedItem().toString().equals("State/Region")){
+                    sortBy = "_list";
+
+                    sortByTextview.setText("Sort by State/Region");
                     Log.d("WIDTH", Integer.toString(sortByTextview.getMeasuredWidth()));
                 } else if(sortBySpinner.getSelectedItem().toString().equals("Climbed/Not Climbed")){
                     sortBy = "_climbed";
@@ -102,7 +107,7 @@ public class NHActivity extends AppCompatActivity {
         peaksList.clear();
 
         access.open();
-        peaksList.addAll(access.populatePeaks("nh_peaks", "_name"));
+        peaksList.addAll(access.populatePeaks("ne_peaks", "_name"));
         access.close();
 
         adapter.notifyDataSetChanged();
@@ -114,7 +119,7 @@ public class NHActivity extends AppCompatActivity {
         peaksList.clear();
 
         access.open();
-        peaksList.addAll(access.populatePeaks("nh_peaks", sortBy));
+        peaksList.addAll(access.populatePeaks("ne_peaks", sortBy));
         access.close();
 
         adapter.notifyDataSetChanged();

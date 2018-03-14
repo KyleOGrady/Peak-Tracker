@@ -11,12 +11,11 @@
     <style name="peakHeader" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/peakBrown</item>
-        <item name="android:textSize">50dp</item>
         <item name="android:layout_height">77dp</item>
     </style>
 
-    <style name= "AppTheme.ClaimPeakPopUp">
-        <item name = "android:windowIsTranslucent">true</item>
+    <style name="AppTheme.ClaimPeakPopUp">
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
     <style name="DialogFragmentStyle" parent="@android:style/Theme.Holo.Dialog.NoActionBar">
@@ -26,7 +25,7 @@
     <style name="datepicker" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorPrimary">@color/lightBlue</item>
         <item name="colorPrimaryDark">@color/peakBrown</item>
-        <item name="colorAccent">@color/celeryGreen </item>
+        <item name="colorAccent">@color/celeryGreen</item>
     </style>
 
     <style name="DialogAnimation">
@@ -45,5 +44,9 @@
     <style name="bottomSheetStyleWrapper" parent="Widget.Design.BottomSheet.Modal">
         <item name="behavior_peekHeight">500dp</item>
     </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

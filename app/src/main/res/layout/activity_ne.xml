@@ -7,12 +7,12 @@
     android:weightSum="4">
 
     <TextView
-        android:id="@+id/adkHeader"
+        android:id="@+id/neHeader"
         style="@style/peakHeader"
-        android:textSize="50sp"
-        android:background="@drawable/adk_background"
+        android:textSize="52sp"
+        android:background="@drawable/ne_background"
         android:layout_width="match_parent"
-        android:text="Adirondack 46" />
+        android:text="Northeast 115" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,10 +34,11 @@
             android:layout_width="30dp"
             android:gravity="center"
             android:layout_height="match_parent" />
+
     </LinearLayout>
 
     <ListView
-        android:id="@+id/adk_peak_list"
+        android:id="@+id/ne_peak_list"
         android:background="@color/peacockBlue"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

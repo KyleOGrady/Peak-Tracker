@@ -121,7 +121,6 @@ public class ClaimPeakActivity extends AppCompatActivity {
             }
         });
 
-
         //ON UPLOAD IMAGE CLICK
         uploadImage.setOnClickListener(new View.OnClickListener() {
             @Override

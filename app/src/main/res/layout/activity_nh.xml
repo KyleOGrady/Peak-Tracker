@@ -3,12 +3,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="4">
+
+    <TextView
+        android:id="@+id/nhHeader"
+        style="@style/peakHeader"
+        android:textSize="40dp"
+        android:background="@drawable/nh_background"
+        android:layout_width="match_parent"
+        android:text="New Hampshire 48" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/lightBlue"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/sortByTextview"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:textSize="18sp"
+            android:paddingLeft="6dp"
+            android:paddingRight="4dp"
+            android:layout_height="match_parent" />
+
+        <Spinner
+            android:id="@+id/sortBySpinner"
+            android:layout_width="30dp"
+            android:gravity="center"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
 
     <ListView
         android:id="@+id/nh_peak_list"
+        android:background="@color/peacockBlue"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </ListView>
+        android:layout_height="match_parent"
+        android:persistentDrawingCache="scrolling"
+        android:scrollingCache="false"
+        android:paddingBottom="27dp"
+        android:layout_weight="3"/>
 
 </LinearLayout>
