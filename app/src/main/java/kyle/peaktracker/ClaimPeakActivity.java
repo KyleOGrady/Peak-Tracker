@@ -51,7 +51,7 @@ import java.util.Locale;
 
 public class ClaimPeakActivity extends AppCompatActivity {
 
-    DatabaseAccess access = DatabaseAccess.getInstance(this);;
+    DatabaseAccess access = DatabaseAccess.getInstance(this);
     ImageView testView;
     ShareButton fbShareButton;
     Bitmap selectedImage;
@@ -70,10 +70,10 @@ public class ClaimPeakActivity extends AppCompatActivity {
 
         callbackManager = CallbackManager.Factory.create();
 
+        //Get peakname and table from PeaksAdapter
         Bundle bundle = getIntent().getExtras();
         final String peakName = bundle.getString("PEAK NAME");
         final String tableName = bundle.getString("TABLE NAME");
-
 
         //Items on Claim dialog
         TextView claimPeak = findViewById(R.id.claimPeakHeader);

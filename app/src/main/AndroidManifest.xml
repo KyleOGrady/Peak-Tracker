@@ -37,10 +37,12 @@
             android:authorities="com.facebook.app.FacebookContentProvider1584973198206867"
             android:exported="true" />
 
+        <activity android:name=".NEActivity" />
+
         <activity
-            android:name=".ViewClaimInfoActivity"
-            android:theme="@style/BottomSheetDialog" />
-        <activity android:name=".NEActivity"></activity>
+            android:name=".EditClaimActivity"
+            android:theme="@style/Theme.AppCompat.Dialog"/>
+
     </application>
 
 </manifest>

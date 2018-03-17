@@ -97,7 +97,6 @@ public class NHActivity extends AppCompatActivity {
 
     protected void onResume() {
         super.onResume();
-
         adapter.clear();
         peaksList.clear();
 

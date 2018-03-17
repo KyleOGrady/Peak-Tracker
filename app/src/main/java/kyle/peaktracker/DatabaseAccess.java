@@ -187,6 +187,14 @@ public class DatabaseAccess {
         database.execSQL(query);
     }
 
+    public void claimPeak(String peakName, String date, String comments, String tableName){
+
+        String query = "UPDATE " + tableName + " SET _climbed = 'Y', _date = '" + date +
+                "', _comments = '" + comments + "' WHERE _name = '" + peakName + "';";
+
+        database.execSQL(query);
+    }
+
     //Used in the claimPeak function, to insert an image into the database
     public void insert_image(String tableName, String peakName, byte[] image){
         ContentValues cv = new ContentValues();

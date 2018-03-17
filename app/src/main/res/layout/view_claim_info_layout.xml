@@ -6,14 +6,33 @@
     android:layout_height="match_parent"
     android:background="@color/lightBlue">
 
-    <TextView
-        android:id="@+id/name"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="35sp"
-        android:textColor="@color/peacockBlue"
-        android:layout_marginLeft="10dp"
-        android:text="name" />
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="35sp"
+            android:textColor="@color/peacockBlue"
+            android:layout_marginLeft="10dp"
+            android:text="name"
+            android:layout_gravity="center"
+            android:layout_weight="2"/>
+
+        <ImageButton
+            android:id="@+id/edit_button"
+            android:layout_width="80dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/edit_button"
+            android:layout_gravity="center"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
 
     <View
         android:layout_width="fill_parent"
@@ -38,6 +57,7 @@
             android:textSize="20sp"
             android:text="comments"
             android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:textColor="@color/peacockBlue"
             android:layout_weight="1"/>
 

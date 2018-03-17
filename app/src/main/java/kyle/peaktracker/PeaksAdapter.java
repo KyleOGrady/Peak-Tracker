@@ -1,5 +1,7 @@
 package kyle.peaktracker;
 
+import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,12 +16,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.graphics.Matrix;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import static android.view.View.VISIBLE;
 import static java.lang.Thread.sleep;
@@ -29,10 +37,10 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
     private List <Peak> items = new ArrayList<Peak>();
     private int resource;
     private Context context;
-    private Typeface font;
     String printPeakInfo = "";
     String printDate = "";
     PeaksAdapter adapter;
+    DatabaseAccess access;
 
     private static final int CLIMBED = 0;
     private static final int NOT_CLIMBED = 1;
@@ -116,8 +124,9 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
                 bottomDialog.setContentView(R.layout.view_claim_info_layout);
                 //Setting items on screen
                 TextView name = bottomDialog.findViewById(R.id.name);
-                TextView height_climbed = bottomDialog.findViewById(R.id.height_climbed);
-                TextView comments = bottomDialog.findViewById(R.id.comments);
+                final ImageButton edit_button = bottomDialog.findViewById(R.id.edit_button);
+                final TextView height_climbed = bottomDialog.findViewById(R.id.height_climbed);
+                final TextView comments = bottomDialog.findViewById(R.id.comments);
 
                 Typeface cabin_reg = Typeface.createFromAsset(context.getAssets(),"fonts/Cabin-Regular.ttf");
                 Typeface cabin_italic = Typeface.createFromAsset(context.getAssets(),"fonts/Cabin-Italic.ttf");
@@ -174,7 +183,95 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
                         fullScreenDialog.show();
                     }
                 });
-                bottomDialog.show();
+
+                //Bring up edit info dialog
+                edit_button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        final Dialog editDialog = new Dialog(context);
+                        editDialog.setContentView(R.layout.activity_edit_claim);
+
+                        final EditText editComments = editDialog.findViewById(R.id.editComments);
+                        final EditText editDate = editDialog.findViewById(R.id.editDate);
+                        Button saveChanges = editDialog.findViewById(R.id.saveChanges);
+                        Button cancelChanges = editDialog.findViewById(R.id.cancelChanges);
+
+                        editComments.setText(getItem(position).get_comments());
+                        editDate.setText(getItem(position).get_date());
+
+                        //Date Picking logic
+                        final Calendar myCalendar = Calendar.getInstance();
+                        final DatePickerDialog.OnDateSetListener date;
+
+                        date = new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                                  int dayOfMonth) {
+
+                                myCalendar.set(Calendar.YEAR, year);
+                                myCalendar.set(Calendar.MONTH, monthOfYear);
+                                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                                String myFormat = "MM/dd/yy"; //In which you need put here
+                                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+                                editDate.setText(sdf.format(myCalendar.getTime()));
+                            }
+
+                        };
+
+                        editDate.setOnClickListener(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                new DatePickerDialog(context, R.style.datepicker, date, myCalendar
+                                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                            }
+                        });
+
+                        saveChanges.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                access = DatabaseAccess.getInstance(context);
+
+                                String peakName = getItem(position).get_name();
+                                final String newDate = editDate.getText().toString();
+                                final String newComments = editComments.getText().toString();
+                                String tableName = getItem(position).get_list();
+
+                                access.open();
+                                access.claimPeak(peakName, newDate, newComments, tableName);
+                                access.close();
+
+                                ((Activity) context).runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        comments.setText(newComments);
+                                        height_climbed.setText(getItem(position).get_height() + "' | Climbed on "  + newDate);
+                                    }
+                                });
+
+                                editDialog.dismiss();
+                            }
+                        });
+
+                        cancelChanges.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                editDialog.dismiss();
+                            }
+                        });
+
+                        editDialog.show();
+                    }
+                });
+
+
+                    bottomDialog.show();
+
                 return true;
             }
         });
@@ -188,7 +285,6 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
                     Intent i = new Intent(context, ClaimPeakActivity.class);
                     String peakName = getItem(position).get_name();
                     String tableName = getItem(position).get_list();
-                    Bitmap peakImage = getItem(position).get_image();
                     Bundle bundle = new Bundle();
                     bundle.putString("PEAK NAME", peakName);
                     bundle.putString("TABLE NAME", tableName);
@@ -198,7 +294,6 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
                 }
             });
         }
-
 
         return convertView;
     }

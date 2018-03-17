@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:fillViewport="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/dialog"
+        android:isScrollContainer="true"
+        android:layout_width="300dp"
+        android:layout_height="500dp"
+        android:orientation="vertical"
+        android:weightSum="5"
+        android:background="@color/celeryGreen"
+        android:scrollbars="vertical"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        tools:context="kyle.peaktracker.ClaimPeakActivity">
+
+        <TextView
+            android:id="@+id/editInfoHeader"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Edit Peak Info"
+            android:textSize="30sp"
+            android:background="@drawable/claim_background"
+            android:textColor="@color/lightBlue"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:id="@+id/editComments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:textColor="@color/lightGreen"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:hint="Enter Comments"
+            android:backgroundTint="@color/lightGreen"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:textColorHint="@color/lightGreen"
+            android:inputType="textMultiLine" />
+
+        <EditText
+            android:id="@+id/editDate"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:clickable="true"
+            android:textColor="@color/lightGreen"
+            android:backgroundTint="@color/lightGreen"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:focusable="false"
+            android:textColorHint="@color/lightGreen"
+            android:hint="Select Date" />
+
+        <ImageButton
+            android:id="@+id/new_image"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/new_image"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/saveChanges"
+                android:layout_width="110dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="Save Changes"/>
+
+            <Button
+                android:id="@+id/cancelChanges"
+                android:layout_width="110dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="Cancel"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/test_view"
+            android:layout_width="200dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_height="200dp" />
+
+    </LinearLayout>
+
+</ScrollView>
