@@ -3,6 +3,7 @@ package kyle.peaktracker;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -14,6 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -29,6 +32,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 import static android.view.View.VISIBLE;
 import static java.lang.Thread.sleep;
 
@@ -165,12 +169,20 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
                 image.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        
                         final Dialog fullScreenDialog = new Dialog(context, R.style.FullScreenDialogTheme);
                         fullScreenDialog.setContentView(R.layout.full_screen_image_layout);
 
-                        ImageView fullScreenImage = (ImageView)fullScreenDialog.findViewById(R.id.fullScreenImage);
+                        int orientation = context.getResources().getConfiguration().orientation;
+
+                        if(orientation == ORIENTATION_LANDSCAPE){
+
+                        }
+
+                        ImageView fullScreenImage = fullScreenDialog.findViewById(R.id.fullScreenImage);
                         fullScreenImage.setImageBitmap(getItem(position).get_image());
+
+                        ((Activity) context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
 
                         //Close the image on click
                         fullScreenImage.setOnClickListener(new View.OnClickListener() {

@@ -76,8 +76,12 @@ public class EditClaimActivity extends AppCompatActivity {
         header.setTypeface(cabin_semiBold);
         editComments.setTypeface(cabin_regular);
         editDate.setTypeface(cabin_regular);
+        unclaim.setTypeface(cabin_semiBold);
 
-        //Set greater height for header if the peak name has more characters
+        saveChanges.setTypeface(cabin_semiBold);
+        cancelChanges.setTypeface(cabin_semiBold);
+
+        //Set greater height for header if the peak name has more than 10   characters
         if( peakName.length() > 10){
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) header.getLayoutParams();
             params.height = getResources().getDimensionPixelSize(R.dimen.text_view_big);
@@ -136,8 +140,6 @@ public class EditClaimActivity extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(pickPhoto, "Select Picture"), 2);
             }
         });
-
-
 
         //Write out changes to the database and close the activity
         saveChanges.setOnClickListener(new View.OnClickListener() {
