@@ -52,7 +52,7 @@ import java.util.Locale;
 public class ClaimPeakActivity extends AppCompatActivity {
 
     DatabaseAccess access = DatabaseAccess.getInstance(this);
-    ImageView testView;
+    ImageView uploadedPicView;
     ShareButton fbShareButton;
     Bitmap selectedImage;
     Bitmap selectedImageScaled;
@@ -81,7 +81,7 @@ public class ClaimPeakActivity extends AppCompatActivity {
         ImageButton uploadImage = findViewById(R.id.upload_image);
         final EditText selectDate = findViewById(R.id.selectDate);
         final EditText enterComments = findViewById(R.id.enterComments);
-        testView = (ImageView)findViewById(R.id.test_view);
+        uploadedPicView = findViewById(R.id.uploaded_pic_view);
 
         //Setting typefaces for each element in the Claim layout
         final Typeface cabin_semiBold = Typeface.createFromAsset(getAssets(),"fonts/Cabin-SemiBold.ttf");
@@ -251,8 +251,8 @@ public class ClaimPeakActivity extends AppCompatActivity {
 
                     imageSaved = getBitmapAsByteArray(selectedImageScaled);
 
-                    testView.setVisibility(View.VISIBLE);
-                    testView.setImageBitmap(selectedImageScaled);
+                    uploadedPicView.setVisibility(View.VISIBLE);
+                    uploadedPicView.setImageBitmap(selectedImageScaled);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                     Toast.makeText(getBaseContext(), "Something went wrong", Toast.LENGTH_LONG).show();

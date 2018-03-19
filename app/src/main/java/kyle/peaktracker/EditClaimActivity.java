@@ -1,17 +1,51 @@
 package kyle.peaktracker;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
+import static kyle.peaktracker.ClaimPeakActivity.getBitmapAsByteArray;
+import static kyle.peaktracker.ClaimPeakActivity.getPath;
 
 public class EditClaimActivity extends AppCompatActivity {
 
     DatabaseAccess access = DatabaseAccess.getInstance(this);
+    Bitmap selectedImage;
+    Bitmap selectedImageScaled;
+    Bitmap shareImage;
+    byte[] imageSaved;
+    ImageView newPicView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,30 +57,189 @@ public class EditClaimActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         final String peakName = bundle.getString("PEAK NAME");
         final String tableName = bundle.getString("TABLE NAME");
-        final String comments = bundle.getString("COMMENTS");
-        final String date = bundle.getString("DATE");
+        final String oldComments = bundle.getString("COMMENTS");
+        final String oldDate = bundle.getString("DATE");
 
+        final TextView header = findViewById(R.id.editInfoHeader);
         final EditText editComments = findViewById(R.id.editComments);
         final EditText editDate = findViewById(R.id.editDate);
+        ImageButton newImage = findViewById(R.id.new_image);
         Button saveChanges = findViewById(R.id.saveChanges);
+        Button cancelChanges = findViewById(R.id.cancelChanges);
+        newPicView = findViewById(R.id.new_pic_view);
 
-        editComments.setText(comments);
-        editDate.setText(date);
+        int peakNameLength = peakName.length();
+        if(peakNameLength > 10){
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) header.getLayoutParams();
+            params.height = getResources().getDimensionPixelSize(R.dimen.text_view_big);
+            header.setLayoutParams(params);
+            header.setText("Edit " + peakName + " Info");
+        } else{
+            header.setText("Edit " + peakName + " Info");
+        }
 
+        editComments.setText(oldComments);
+        editDate.setText(oldDate);
+
+        //Date Picking logic
+        final Calendar myCalendar = Calendar.getInstance();
+        final DatePickerDialog.OnDateSetListener date;
+
+        date = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                String myFormat = "MM/dd/yy"; //In which you need put here
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+                editDate.setText(sdf.format(myCalendar.getTime()));
+            }
+
+        };
+
+        editDate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(EditClaimActivity.this, R.style.datepicker, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        //ON UPLOAD IMAGE CLICK
+        newImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                pickPhoto.setType("image/*");
+                pickPhoto.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(pickPhoto, "Select Picture"), 2);
+            }
+        });
+
+
+
+        //Write out changes to the database and close the activity
         saveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String date = editDate.getText().toString();
-                String comments = editComments.getText().toString();
+                final String newDate = editDate.getText().toString();
+                final String newComments = editComments.getText().toString();
 
                 access.open();
-                access.claimPeak(peakName, date, comments, tableName);
+
+                if(imageSaved==null){
+                    access.claimPeak(peakName, newDate, newComments, tableName);
+                } else {
+                    access.claimPeak(peakName, newDate, newComments, imageSaved, tableName);
+                }
+
                 access.close();
+
+                finish(); //close the activity
+            }
+        });
+
+        cancelChanges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
                 finish();
             }
         });
 
     }
+
+    @Override
+    protected void onActivityResult(int reqCode, int resultCode, Intent data) {
+        super.onActivityResult(reqCode, resultCode, data);
+        if (reqCode == 2) {
+            if (resultCode == RESULT_OK) {
+                //Get image from gallery
+                try {
+                    //Check for permission to read external storage
+                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                            != PackageManager.PERMISSION_GRANTED) {
+
+                        // Should we show an explanation?
+                        if (shouldShowRequestPermissionRationale(
+                                Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                            // Explain to the user why we need to read the contacts
+                        }
+
+                        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1000); //Not sure what this request code means but it works
+
+                        return;
+                    }
+
+                    final Uri imageUri = data.getData();
+                    final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                    selectedImage = BitmapFactory.decodeStream(imageStream);
+                    int width = selectedImage.getWidth();
+                    int height = selectedImage.getHeight();
+
+                    Log.d("IMAGE WIDTH", Integer.toString(width));
+                    Log.d("IMAGE HEIGHT", Integer.toString(height));
+                    Matrix matrix = new Matrix();
+
+                    File file = new File(getPath(getApplicationContext(), imageUri));
+                    int orientation = 0;
+                    ExifInterface exif = null;
+                    try {
+                        exif = new ExifInterface(file.getAbsolutePath());
+                        orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                        Log.d("ORIENTATION", Integer.toString(orientation));
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (orientation == 6) {
+                        matrix.setRotate(90);
+                        shareImage = Bitmap.createBitmap(selectedImage, 0, 0, width, height, matrix, false);
+                    } else {
+                        shareImage = selectedImage;
+                    }
+
+                    selectedImageScaled = getResizedBitmap(selectedImage, height / 5, width / 5, matrix);
+
+                    imageSaved = getBitmapAsByteArray(selectedImageScaled);
+
+                    newPicView.setVisibility(View.VISIBLE);
+                    newPicView.setImageBitmap(selectedImageScaled);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getBaseContext(), "Something went wrong", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }
+    }
+
+    public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth, Matrix m) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // create a matrix for the manipulation
+
+        // resize the bit map
+        m.postScale(scaleWidth, scaleHeight);
+        // recreate the new Bitmap
+        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, m, false);
+        return resizedBitmap;
+    }
+
+
 }
+
