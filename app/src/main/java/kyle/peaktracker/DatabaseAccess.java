@@ -203,7 +203,7 @@ public class DatabaseAccess {
         database.update(tableName, cv, "_name=?", whereArgs);
     }
 
-    //Unused?
+    //Returns a bitmap for the peak selected
     public Bitmap query_image(String tableName, String peakName){
         String query = "SELECT _image FROM " + tableName + " WHERE _name='" + peakName + "';";
 
@@ -215,6 +215,14 @@ public class DatabaseAccess {
         Bitmap image = BitmapFactory.decodeByteArray(byteArray, 0 ,byteArray.length);
 
         return image;
+    }
+
+    public void unclaimPeak(String tableName, String peakName){
+
+        String query = "UPDATE " + tableName + " SET _climbed = 'N', _date = NULL, _comments = NULL, _image = NULL " +
+                            "WHERE _name = '" + peakName + "';";
+
+        database.execSQL(query);
     }
 
 }

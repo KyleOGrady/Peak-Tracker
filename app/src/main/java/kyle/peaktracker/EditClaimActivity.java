@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.Typeface;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.ContactsContract;
@@ -44,7 +45,7 @@ public class EditClaimActivity extends AppCompatActivity {
     Bitmap selectedImageScaled;
     Bitmap shareImage;
     byte[] imageSaved;
-    ImageView newPicView;
+    ImageView picView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,17 +67,28 @@ public class EditClaimActivity extends AppCompatActivity {
         ImageButton newImage = findViewById(R.id.new_image);
         Button saveChanges = findViewById(R.id.saveChanges);
         Button cancelChanges = findViewById(R.id.cancelChanges);
-        newPicView = findViewById(R.id.new_pic_view);
+        picView = findViewById(R.id.pic_view);
+        final TextView unclaim = findViewById(R.id.unclaim);
 
-        int peakNameLength = peakName.length();
-        if(peakNameLength > 10){
+        final Typeface cabin_semiBold = Typeface.createFromAsset(getAssets(),"fonts/Cabin-SemiBold.ttf");
+        final Typeface cabin_regular = Typeface.createFromAsset(getAssets(),"fonts/Cabin-Regular.ttf");
+
+        header.setTypeface(cabin_semiBold);
+        editComments.setTypeface(cabin_regular);
+        editDate.setTypeface(cabin_regular);
+
+        //Set greater height for header if the peak name has more characters
+        if( peakName.length() > 10){
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) header.getLayoutParams();
             params.height = getResources().getDimensionPixelSize(R.dimen.text_view_big);
             header.setLayoutParams(params);
-            header.setText("Edit " + peakName + " Info");
-        } else{
-            header.setText("Edit " + peakName + " Info");
         }
+
+        header.setText("Edit " + peakName + " Info");
+
+        access.open();
+        picView.setImageBitmap(access.query_image(tableName, peakName));
+        access.close();
 
         editComments.setText(oldComments);
         editDate.setText(oldDate);
@@ -157,6 +169,45 @@ public class EditClaimActivity extends AppCompatActivity {
             }
         });
 
+        unclaim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Set the view to the claim confirmation layout
+                setContentView(R.layout.confirm_unclaim_layout);
+
+                TextView unclaim_header = findViewById(R.id.unclaim_header);
+                Button confirm_unclaim = findViewById(R.id.confirm_unclaim);
+                Button cancel_unclaim = findViewById(R.id.cancel_unclaim);
+
+                unclaim_header.setTypeface(cabin_semiBold);
+                confirm_unclaim.setTypeface(cabin_regular);
+                cancel_unclaim.setTypeface(cabin_regular);
+
+                unclaim_header.setText("Are you sure you want to unclaim " + peakName + "?");
+
+                confirm_unclaim.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        access.open();
+                        access.unclaimPeak(tableName, peakName);
+                        access.close();
+
+                        finish();
+                    }
+                });
+
+                cancel_unclaim.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        finish();
+                    }
+                });
+
+            }
+        });
+
     }
 
     @Override
@@ -214,8 +265,9 @@ public class EditClaimActivity extends AppCompatActivity {
 
                     imageSaved = getBitmapAsByteArray(selectedImageScaled);
 
-                    newPicView.setVisibility(View.VISIBLE);
-                    newPicView.setImageBitmap(selectedImageScaled);
+                   // newPicView.setVisibility(View.VISIBLE);
+
+                    picView.setImageBitmap(selectedImageScaled);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                     Toast.makeText(getBaseContext(), "Something went wrong", Toast.LENGTH_LONG).show();

@@ -58,6 +58,7 @@
             android:text="comments"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
             android:textColor="@color/peacockBlue"
             android:layout_weight="1"/>
 
@@ -68,6 +69,5 @@
             android:layout_weight="1"
             android:layout_gravity="center"
             android:layout_marginBottom="8dp" />
-
 
 </LinearLayout>

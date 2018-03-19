@@ -97,11 +97,22 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/new_pic_view"
+            android:id="@+id/pic_view"
             android:layout_width="200dp"
+            android:layout_marginTop="10dp"
             android:layout_gravity="center"
-            android:visibility="gone"
             android:layout_height="200dp" />
+
+        <TextView
+            android:id="@+id/unclaim"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="(Unclaim Peak)"
+            android:textColor="@color/unclaimedRed"
+            android:layout_gravity="center"
+            android:textSize="15sp"/>
 
     </LinearLayout>
 
