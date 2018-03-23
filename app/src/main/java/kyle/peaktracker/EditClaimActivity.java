@@ -181,9 +181,9 @@ public class EditClaimActivity extends AppCompatActivity {
                 Button confirm_unclaim = findViewById(R.id.confirm_unclaim);
                 Button cancel_unclaim = findViewById(R.id.cancel_unclaim);
 
-                unclaim_header.setTypeface(cabin_semiBold);
-                confirm_unclaim.setTypeface(cabin_regular);
-                cancel_unclaim.setTypeface(cabin_regular);
+                unclaim_header.setTypeface(cabin_regular);
+                confirm_unclaim.setTypeface(cabin_semiBold);
+                cancel_unclaim.setTypeface(cabin_semiBold);
 
                 unclaim_header.setText("Are you sure you want to unclaim " + peakName + "?");
 

@@ -1,9 +1,6 @@
 package kyle.peaktracker;
 
-import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -15,26 +12,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.graphics.Matrix;
 import android.widget.TextView;
-
-import java.text.SimpleDateFormat;
+import android.widget.Toast;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
-
-import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 import static android.view.View.VISIBLE;
-import static java.lang.Thread.sleep;
 
 public class PeaksAdapter extends ArrayAdapter<Peak>{
 
@@ -141,13 +128,14 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
                 comments.setTypeface(cabin_italic);
                 final ImageView image = bottomDialog.findViewById(R.id.uploaded_image);
 
+                //Testing to see if there are comments to display
+                if(getItem(position).get_comments() != null){
+                    comments.setVisibility(VISIBLE);
+                }
+
                 //Testing to see if there is an image to display
-                if(getItem(position).get_image() == null){
-                    //do nothing
-                    Log.d("BOTTOM SHEET IMAGE", "Image is null");
-                } else{
+                if(getItem(position).get_image() != null){
                     image.setVisibility(VISIBLE);
-                    Log.d("BOTTOM SHEET IMAGE", "Image exists");
                 }
 
                 //Setting text for textfields
@@ -158,6 +146,7 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
                     height_climbed_text = getItem(position).get_height() + "' | Not Yet Climbed";
                 } else { //Has been climbed
                     height_climbed_text = getItem(position).get_height() + "' | Climbed on " + getItem(position).get_date();
+                    edit_button.setVisibility(VISIBLE);
                 }
 
                 height_climbed.setText(height_climbed_text);
@@ -169,20 +158,12 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
                 image.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        
+
                         final Dialog fullScreenDialog = new Dialog(context, R.style.FullScreenDialogTheme);
                         fullScreenDialog.setContentView(R.layout.full_screen_image_layout);
 
-                        int orientation = context.getResources().getConfiguration().orientation;
-
-                        if(orientation == ORIENTATION_LANDSCAPE){
-
-                        }
-
                         ImageView fullScreenImage = fullScreenDialog.findViewById(R.id.fullScreenImage);
                         fullScreenImage.setImageBitmap(getItem(position).get_image());
-
-                        ((Activity) context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
 
                         //Close the image on click
                         fullScreenImage.setOnClickListener(new View.OnClickListener() {
@@ -195,7 +176,6 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
                         fullScreenDialog.show();
                     }
                 });
-
 
                 //Bring up edit info dialog
                 edit_button.setOnClickListener(new View.OnClickListener() {
@@ -243,6 +223,21 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
                     context.startActivity(i);
                 }
             });
+
+        } else {
+
+            holder.climbedImage.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+
+                    String peakName = getItem(position).get_name();
+                    String dateClimbed = getItem(position).get_date();
+
+                    Toast.makeText(context, peakName + " climbed on " + dateClimbed, Toast.LENGTH_LONG).show();
+                }
+            });
+
         }
 
         return convertView;

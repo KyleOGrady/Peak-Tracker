@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="10dp">
+    android:layout_height="200dp"
+    android:padding="20dp"
+    android:background="@drawable/unclaim_confirm_background">
 
     <TextView
         android:id="@+id/unclaim_header"
@@ -11,6 +12,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:textSize="30dp"
+        android:textColor="@color/yellowish"
         android:layout_marginBottom="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -26,12 +28,18 @@
             android:id="@+id/confirm_unclaim"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:background="@color/yellowish"
+            android:textSize="20dp"
+            android:textColor="@color/unclaimedRed"
             android:text="Yes"/>
 
         <Button
             android:id="@+id/cancel_unclaim"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:background="@color/lightBlue"
+            android:textSize="20dp"
+            android:textColor="@color/nearBlack"
             android:text="No" />
 
     </LinearLayout>
