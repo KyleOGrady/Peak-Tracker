@@ -28,7 +28,7 @@
         android:id="@+id/peak_claimPeak"
         android:layout_gravity="center"
         android:focusable="false"
-        android:background="@drawable/claim_image_2"
+        android:background="@drawable/new_claim_peak"
         android:focusableInTouchMode="false"
         android:layout_width="95dp"
         android:layout_height="70dp"
