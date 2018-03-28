@@ -11,4 +11,5 @@
     <color name="lightBlue">#A6B4BF</color>
     <color name="yellowish">#FCEAA0</color>
     <color name="nearBlack">#0e1111</color>
+    <color name="nearWhite">#F8F8FF</color>
 </resources>

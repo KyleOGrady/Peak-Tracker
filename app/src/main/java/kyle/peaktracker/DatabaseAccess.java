@@ -44,7 +44,7 @@ public class DatabaseAccess {
     }
 
 
-    public double calculate_completion(String tableName){
+    public int calculate_completion(String tableName){
 
         String query;
 
@@ -59,7 +59,7 @@ public class DatabaseAccess {
         }
         Cursor c = database.rawQuery(query, null);
         String temp_compare = ""; //placeholder for N or Y
-        double num_hiked = 0.0;
+        int num_hiked = 0;
         double total;
         double perc;
         if(tableName.equals("ne_peaks")){
@@ -85,10 +85,10 @@ public class DatabaseAccess {
             }
         }
 
-        perc = (num_hiked/total)*100;
-        Log.d("PERCENTAGE", Double.toString(perc));
+//        perc = (num_hiked/total)*100;
+//        Log.d("PERCENTAGE", Double.toString(perc));
         c.close();
-        return perc;
+        return num_hiked;
     }
 
     //Returns a list of peak objects, taken from the specified table in the database
