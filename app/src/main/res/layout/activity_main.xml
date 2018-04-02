@@ -8,32 +8,20 @@
     android:background="@color/lightBlue"
     android:weightSum="3">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/main_header"
         android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/main_header"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:text="Peak Tracker"
-            android:textSize="30dp" />
-
-        <ImageView
-            android:id="@+id/header_image"
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:gravity="right"
-            android:src="@drawable/yes"/>
-
-    </LinearLayout>
+        android:layout_height="70dp"
+        android:gravity="center"
+        android:text="Peak Tracker"
+        android:textColor="@color/nearWhite"
+        android:background="@drawable/mountains_4_claim"
+        android:textSize="30dp" />
 
     <Button
         android:id="@+id/ne115_display_button"
         android:text="NE115: 45/115"
-        android:textColor="@color/nearWhite"
+        android:textColor="@color/lightBlue"
         android:textSize="50sp"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -46,7 +34,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:text="ADK: 45/46"
-        android:textColor="@color/nearWhite"
+        android:textColor="@color/peakBrown"
         android:textSize="50sp"
         android:layout_gravity="center"
         android:background="@drawable/adk_pic_faded"
@@ -56,7 +44,7 @@
         android:layout_weight="1"
         android:id="@+id/nh_display_button"
         android:text="NH: 45/48"
-        android:textColor="@color/nearWhite"
+        android:textColor="@color/lightBlue"
         android:textSize="50sp"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

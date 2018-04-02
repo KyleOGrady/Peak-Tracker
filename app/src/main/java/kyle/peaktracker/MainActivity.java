@@ -39,7 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
         final Typeface cabin_semiBold = Typeface.createFromAsset(getAssets(),"fonts/Cabin-SemiBold.ttf");
         final Typeface cabin_regular = Typeface.createFromAsset(getAssets(),"fonts/Cabin-Regular.ttf");
+        //Typeface noir = Typeface.createFromAsset(getAssets(), "fonts/NoirStd-Regular.ttf");
 
+        header.setTypeface(cabin_semiBold);
         NE115.setTypeface(cabin_regular);
         ADK46.setTypeface(cabin_regular);
         NH48.setTypeface(cabin_regular);
