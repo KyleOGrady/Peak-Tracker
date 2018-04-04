@@ -33,9 +33,22 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    ImageView NE115;
-    ImageView ADK46;
-    ImageView NH48;
+    //Northeast 115
+    ImageView NE115_mtn;
+    TextView NE115_title;
+    TextView NE115_number;
+
+    //ADK 46
+    ImageView ADK46_mtn;
+    TextView ADK46_title;
+    TextView ADK46_number;
+
+    //NH 48
+    ImageView NH48_mtn;
+    TextView NH48_title;
+    TextView NH48_number;
+
+    //Main header
     TextView header;
 
     Bitmap originalPhoto;
@@ -57,20 +70,34 @@ public class MainActivity extends AppCompatActivity {
         access = DatabaseAccess.getInstance(this);
         originalPhoto  = BitmapFactory.decodeResource(getResources(), R.drawable.progress_graphic);
 
-        //Setting Id's
-        header = findViewById(R.id.main_header);
-        NE115 = findViewById(R.id.ne115_display_button);
-        ADK46 = findViewById(R.id.adk_display_button);
-        NH48 = findViewById(R.id.nh_display_button);
-
         final Typeface cabin_semiBold = Typeface.createFromAsset(getAssets(),"fonts/Cabin-SemiBold.ttf");
         final Typeface cabin_regular = Typeface.createFromAsset(getAssets(),"fonts/Cabin-Regular.ttf");
         //Typeface noir = Typeface.createFromAsset(getAssets(), "fonts/NoirStd-Regular.ttf");
 
+        //Setting Id's and typeface for Northeast 115
+        NE115_mtn = findViewById(R.id.ne_mtn);
+        NE115_title = findViewById(R.id.ne_title);
+        NE115_title.setTypeface(cabin_semiBold);
+        NE115_number = findViewById(R.id.ne_number);
+        NE115_number.setTypeface(cabin_regular);
+
+        //Setting Id's and typeface for ADK 46
+        ADK46_mtn = findViewById(R.id.adk_mtn);
+        ADK46_title = findViewById(R.id.adk_title);
+        ADK46_title.setTypeface(cabin_semiBold);
+        ADK46_number = findViewById(R.id.adk_number);
+        ADK46_number.setTypeface(cabin_regular);
+
+        //Setting Id's and typeface for NH 48
+        NH48_mtn = findViewById(R.id.nh_mtn);
+        NH48_title = findViewById(R.id.nh_title);
+        NH48_title.setTypeface(cabin_semiBold);
+        NH48_number = findViewById(R.id.nh_number);
+        NH48_number.setTypeface(cabin_regular);
+
+        //Setting id for header
+        header = findViewById(R.id.main_header);
         header.setTypeface(cabin_semiBold);
-       // NE115.setTypeface(cabin_regular);
-       // ADK46.setTypeface(cabin_regular);
-       // NH48.setTypeface(cabin_regular);
 
         access.open();
         ne_num_completed = access.calculate_completion("ne_peaks");
@@ -83,37 +110,37 @@ public class MainActivity extends AppCompatActivity {
         nh_perc_completed = calculate_perc_completed(nh_num_completed, "nh_peaks");
 
         //Set the shading on the images according to how much has been completed
-        setMonoChrome(NE115, originalPhoto, ne_perc_completed);
-        setMonoChrome(ADK46, originalPhoto, adk_perc_completed);
-        setMonoChrome(NH48, originalPhoto, nh_perc_completed);
+        setMonoChrome(NE115_mtn, originalPhoto, ne_perc_completed);
+        setMonoChrome(ADK46_mtn, originalPhoto, adk_perc_completed);
+        setMonoChrome(NH48_mtn, originalPhoto, nh_perc_completed);
 
 
-        //Setting text for the buttons
-     //   NE115.setText("NE115: " + ne_completed + "/115");
-//        ADK46.setText("ADK46: " + adk_completed + "/46");
-//        NH48.setText("NH48: " + nh_completed + "/48");
+        //Setting text for number displays
+        NE115_number.setText(ne_num_completed + "/115");
+        ADK46_number.setText(adk_num_completed + "/46");
+        NH48_number.setText(nh_num_completed + "/48");
 
         //Button Actions
-        NE115.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, NEActivity.class));
-            }
-        });
-
-        ADK46.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ADKActivity.class));
-            }
-        });
-
-        NH48.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, NHActivity.class));
-            }
-        });
+//        NE115.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(MainActivity.this, NEActivity.class));
+//            }
+//        });
+//
+//        ADK46.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(MainActivity.this, ADKActivity.class));
+//            }
+//        });
+//
+//        NH48.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(MainActivity.this, NHActivity.class));
+//            }
+//        });
 
     }
 
