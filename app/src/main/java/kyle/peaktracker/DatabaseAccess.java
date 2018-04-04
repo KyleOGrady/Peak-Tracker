@@ -85,8 +85,8 @@ public class DatabaseAccess {
             }
         }
 
-//        perc = (num_hiked/total)*100;
-//        Log.d("PERCENTAGE", Double.toString(perc));
+        //perc = (num_hiked/total);
+        //Log.d("PERCENTAGE", Double.toString(perc));
         c.close();
         return num_hiked;
     }
