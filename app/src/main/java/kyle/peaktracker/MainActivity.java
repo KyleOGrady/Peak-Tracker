@@ -1,33 +1,12 @@
 package kyle.peaktracker;
 
-import android.annotation.TargetApi;
-import android.content.Intent;;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.Point;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-
-import java.lang.annotation.Target;
-import java.text.DecimalFormat;
-import java.util.LinkedList;
-import java.util.Queue;
-
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -52,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     TextView header;
 
     Bitmap originalPhoto;
+    Bitmap overlay;
 
     DatabaseAccess access;
     //Setting Display
@@ -68,7 +48,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         access = DatabaseAccess.getInstance(this);
-        originalPhoto  = BitmapFactory.decodeResource(getResources(), R.drawable.progress_graphic);
+
+        originalPhoto  = BitmapFactory.decodeResource(getResources(), R.drawable.progress_graphic_1);
+        overlay  = BitmapFactory.decodeResource(getResources(), R.drawable.progress_graphic_1_overlay);
 
         final Typeface cabin_semiBold = Typeface.createFromAsset(getAssets(),"fonts/Cabin-SemiBold.ttf");
         final Typeface cabin_regular = Typeface.createFromAsset(getAssets(),"fonts/Cabin-Regular.ttf");
@@ -110,10 +92,9 @@ public class MainActivity extends AppCompatActivity {
         nh_perc_completed = calculate_perc_completed(nh_num_completed, "nh_peaks");
 
         //Set the shading on the images according to how much has been completed
-        setMonoChrome(NE115_mtn, originalPhoto, ne_perc_completed);
-        setMonoChrome(ADK46_mtn, originalPhoto, adk_perc_completed);
-        setMonoChrome(NH48_mtn, originalPhoto, nh_perc_completed);
-
+        setOverlay(NE115_mtn, originalPhoto, ne_perc_completed);
+        setOverlay(ADK46_mtn, originalPhoto, adk_perc_completed);
+        setOverlay(NH48_mtn, originalPhoto, nh_perc_completed);
 
         //Setting text for number displays
         NE115_number.setText(ne_num_completed + "/115");
@@ -158,32 +139,22 @@ public class MainActivity extends AppCompatActivity {
         //NH48.setText("NH48: " + nh_completed + "/48");
     }
 
-    //Take an imageview and image, and a percentage, and fill the image with color for the specified percentage,
+    //Take an imageview, image and percentage, and fill the image with color for the specified percentage,
     //and then assign the image to the specified imageview
-    public void setMonoChrome(ImageView image, Bitmap originalBitmap, double percentageCompleted) {
+    public void setOverlay(ImageView image, Bitmap originalBitmap, double percentageCompleted) {
 
         int height = originalBitmap.getHeight();
-        int percentHeight = (int) Math.floor(height *  (1-percentageCompleted));
+        int percentHeight;
+        if(percentageCompleted == 0){
+            percentHeight = (int) Math.floor(height);
+        } else {
+            percentHeight = (int) Math.floor(height *  (percentageCompleted));
+        }
 
-        //create a bitmap of the top 40% of image height that we will make black and white
-        Bitmap croppedBitmap = Bitmap.createBitmap(originalBitmap, 0, 0, originalBitmap.getWidth() , percentHeight );
-        //make it monochrome
-        Bitmap blackAndWhiteBitmap = monoChrome(croppedBitmap);
-        //copy the monochrome bmp (blackAndWhiteBitmap) to the original bmp (originalBitmap)
-        originalBitmap = overlay(originalBitmap, blackAndWhiteBitmap);
+        Bitmap cropped = Bitmap.createBitmap(overlay, 0, 0, overlay.getWidth() , percentHeight );
+        originalBitmap = overlay(originalBitmap, cropped);
         //set imageview to new bitmap
         image.setImageBitmap(originalBitmap );
-    }
-
-    public Bitmap monoChrome(Bitmap bitmap) {
-        Bitmap bmpMonochrome = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bmpMonochrome);
-        ColorMatrix ma = new ColorMatrix();
-        ma.setSaturation(0);
-        Paint paint = new Paint();
-        paint.setColorFilter(new ColorMatrixColorFilter(ma));
-        canvas.drawBitmap(bitmap, 0, 0, paint);
-        return bmpMonochrome;
     }
 
     public Bitmap overlay(Bitmap bmp1, Bitmap bmp2) {
