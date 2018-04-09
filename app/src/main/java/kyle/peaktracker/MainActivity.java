@@ -31,7 +31,11 @@ public class MainActivity extends AppCompatActivity {
     TextView header;
 
     Bitmap originalPhoto;
+    Bitmap originalPhoto2;
+    Bitmap originalPhoto3;
+    Bitmap originalPhoto4;
     Bitmap overlay;
+
 
     DatabaseAccess access;
     //Setting Display
@@ -50,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         access = DatabaseAccess.getInstance(this);
 
         originalPhoto  = BitmapFactory.decodeResource(getResources(), R.drawable.progress_graphic_1);
+        originalPhoto3 = BitmapFactory.decodeResource(getResources(), R.drawable.progress_graphic_3);
+        originalPhoto4 = BitmapFactory.decodeResource(getResources(), R.drawable.progress_graphic_4);
         overlay  = BitmapFactory.decodeResource(getResources(), R.drawable.progress_graphic_1_overlay);
 
         final Typeface cabin_semiBold = Typeface.createFromAsset(getAssets(),"fonts/Cabin-SemiBold.ttf");
@@ -145,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
 
         int height = originalBitmap.getHeight();
         int percentHeight;
+
         if(percentageCompleted == 0){
             percentHeight = (int) Math.floor(height);
         } else {
