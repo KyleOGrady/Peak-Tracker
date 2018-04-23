@@ -7,6 +7,7 @@ import android.graphics.Matrix;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -53,10 +54,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         access = DatabaseAccess.getInstance(this);
 
-        originalPhoto  = BitmapFactory.decodeResource(getResources(), R.drawable.progress_graphic_1);
+        originalPhoto  = BitmapFactory.decodeResource(getResources(), R.drawable.range_tall_overlay);
         originalPhoto3 = BitmapFactory.decodeResource(getResources(), R.drawable.progress_graphic_3);
         originalPhoto4 = BitmapFactory.decodeResource(getResources(), R.drawable.progress_graphic_4);
-        overlay  = BitmapFactory.decodeResource(getResources(), R.drawable.progress_graphic_1_overlay);
+        overlay  = BitmapFactory.decodeResource(getResources(), R.drawable.range_tall);
 
         final Typeface cabin_semiBold = Typeface.createFromAsset(getAssets(),"fonts/Cabin-SemiBold.ttf");
         final Typeface cabin_regular = Typeface.createFromAsset(getAssets(),"fonts/Cabin-Regular.ttf");
@@ -99,8 +100,8 @@ public class MainActivity extends AppCompatActivity {
 
         //Set the shading on the images according to how much has been completed
         setOverlay(NE115_mtn, originalPhoto, ne_perc_completed);
-        setOverlay(ADK46_mtn, originalPhoto, adk_perc_completed);
-        setOverlay(NH48_mtn, originalPhoto, nh_perc_completed);
+        //setOverlay(ADK46_mtn, originalPhoto, adk_perc_completed);
+        //setOverlay(NH48_mtn, originalPhoto, nh_perc_completed);
 
         //Setting text for number displays
         NE115_number.setText(ne_num_completed + "/115");
@@ -156,6 +157,8 @@ public class MainActivity extends AppCompatActivity {
             percentHeight = (int) Math.floor(height);
         } else {
             percentHeight = (int) Math.floor(height *  (percentageCompleted));
+            Log.d("PERCENT Completed", Double.toString(percentageCompleted));
+            Log.d("PERCENT HEIGHT", Integer.toString(percentHeight));
         }
 
         Bitmap cropped = Bitmap.createBitmap(overlay, 0, 0, overlay.getWidth() , percentHeight );
@@ -168,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
         Bitmap bmp3 = bmp1.copy(Bitmap.Config.ARGB_8888,true);//mutable copy
         Canvas canvas = new Canvas(bmp3 );
         canvas.drawBitmap(bmp2, new Matrix(), null);
-        return bmp3 ;
+        return bmp3;
     }
 
     //Take the number of peaks hiked, and calculate a percentage based off of each list
