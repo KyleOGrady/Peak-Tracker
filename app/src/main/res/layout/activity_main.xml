@@ -9,15 +9,41 @@
     android:orientation="vertical"
     android:weightSum="3">
 
-    <TextView
-        android:id="@+id/main_header"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@drawable/mountains_4_claim"
-        android:gravity="center"
-        android:text="Peak Tracker"
-        android:textColor="@color/nearWhite"
-        android:textSize="30dp" />
+        android:background="@drawable/main_header_v3">
+
+        <TextView
+            android:id="@+id/main_header"
+            android:layout_width="180dp"
+            android:layout_height="35dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="57dp"
+            android:gravity="center"
+            android:text="Peak Tracker"
+            android:textColor="@color/nearWhite"
+            android:textSize="30dp" />
+
+        <ImageView
+            android:layout_width="73dp"
+            android:layout_height="56dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/main_header"
+            android:src="@drawable/yes_for_header_v2" />
+
+
+    </RelativeLayout>
+
+    <!--<TextView-->
+        <!--android:id="@+id/main_header"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="60dp"-->
+        <!--android:background="@drawable/main_header_v2"-->
+        <!--android:gravity="center"-->
+        <!--android:textColor="@color/nearWhite"-->
+        <!--android:textSize="30dp" />-->
 
     <!-- Northeast 115 -->
     <RelativeLayout
@@ -47,10 +73,11 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/ne_title"
             android:layout_centerVertical="true"
-            android:layout_marginStart="42dp"
-
+            android:layout_marginStart="40dp"
+            android:text="112/115"
+            android:paddingTop="5dp"
             android:textColor="@color/darkerBlue"
-            android:textSize="40sp" />
+            android:textSize="45sp" />
 
         <ImageView
             android:id="@+id/ne_mtn"
@@ -90,10 +117,11 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/adk_title"
             android:layout_centerVertical="true"
-            android:layout_marginStart="42dp"
-
+            android:layout_marginStart="40dp"
+            android:text="12/46"
+            android:paddingTop="5dp"
             android:textColor="@color/darkerBlue"
-            android:textSize="40sp" />
+            android:textSize="45sp" />
 
         <ImageView
             android:id="@+id/adk_mtn"
@@ -133,10 +161,10 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/nh_title"
             android:layout_centerVertical="true"
-            android:layout_marginStart="42dp"
-
+            android:layout_marginStart="40dp"
+            android:text="12/48"
             android:textColor="@color/darkerBlue"
-            android:textSize="40sp" />
+            android:textSize="45sp" />
 
         <ImageView
             android:id="@+id/nh_mtn"
