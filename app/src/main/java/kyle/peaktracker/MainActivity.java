@@ -1,13 +1,17 @@
 package kyle.peaktracker;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -54,14 +58,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         access = DatabaseAccess.getInstance(this);
 
-        originalPhoto  = BitmapFactory.decodeResource(getResources(), R.drawable.range_tall_overlay);
-        originalPhoto3 = BitmapFactory.decodeResource(getResources(), R.drawable.progress_graphic_3);
-        originalPhoto4 = BitmapFactory.decodeResource(getResources(), R.drawable.progress_graphic_4);
-        overlay  = BitmapFactory.decodeResource(getResources(), R.drawable.range_tall);
+        //Photo files for range
+        originalPhoto  = BitmapFactory.decodeResource(getResources(), R.drawable.range_smooth);
+        overlay  = BitmapFactory.decodeResource(getResources(), R.drawable.range_smooth_overlay);
 
         final Typeface cabin_semiBold = Typeface.createFromAsset(getAssets(),"fonts/Cabin-SemiBold.ttf");
         final Typeface cabin_regular = Typeface.createFromAsset(getAssets(),"fonts/Cabin-Regular.ttf");
-        //Typeface noir = Typeface.createFromAsset(getAssets(), "fonts/NoirStd-Regular.ttf");
 
         //Setting Id's and typeface for Northeast 115
         NE115_mtn = findViewById(R.id.ne_mtn);
@@ -99,9 +101,14 @@ public class MainActivity extends AppCompatActivity {
         nh_perc_completed = calculate_perc_completed(nh_num_completed, "nh_peaks");
 
         //Set the shading on the images according to how much has been completed
-        setOverlay(NE115_mtn, originalPhoto, ne_perc_completed);
-        //setOverlay(ADK46_mtn, originalPhoto, adk_perc_completed);
-        //setOverlay(NH48_mtn, originalPhoto, nh_perc_completed);
+
+        overlay(NE115_mtn, originalPhoto, overlay, 1.0-ne_perc_completed);
+        overlay(ADK46_mtn, originalPhoto, overlay, 1.0-adk_perc_completed);
+        overlay(NH48_mtn, originalPhoto, overlay, 1.0-nh_perc_completed);
+
+        Log.d("PERC COMPLETED", "NE: " + Double.toString(ne_perc_completed));
+        Log.d("PERC COMPLETED", "ADK: " + Double.toString(adk_perc_completed));
+        Log.d("PERC COMPLETED", "NH: " + Double.toString(nh_perc_completed));
 
         //Setting text for number displays
         NE115_number.setText(ne_num_completed + "/115");
@@ -109,26 +116,26 @@ public class MainActivity extends AppCompatActivity {
         NH48_number.setText(nh_num_completed + "/48");
 
         //Button Actions
-//        NE115.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(MainActivity.this, NEActivity.class));
-//            }
-//        });
-//
-//        ADK46.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(MainActivity.this, ADKActivity.class));
-//            }
-//        });
-//
-//        NH48.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(MainActivity.this, NHActivity.class));
-//            }
-//        });
+        NE115_mtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, NEActivity.class));
+            }
+        });
+
+        ADK46_mtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ADKActivity.class));
+            }
+        });
+
+        NH48_mtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, NHActivity.class));
+            }
+        });
 
     }
 
@@ -141,37 +148,35 @@ public class MainActivity extends AppCompatActivity {
         nh_num_completed = access.calculate_completion("nh_peaks");
         access.close();
 
-        //NE115.setText("NE115: " + ne_completed + "/115");
-        //ADK46.setText("ADK46: " + adk_completed + "/46");
-        //NH48.setText("NH48: " + nh_completed + "/48");
+        ne_perc_completed = calculate_perc_completed(ne_num_completed, "ne_peaks");
+        adk_perc_completed = calculate_perc_completed(adk_num_completed, "adk_peaks");
+        nh_perc_completed = calculate_perc_completed(nh_num_completed, "nh_peaks");
+
+        overlay(NE115_mtn, originalPhoto, overlay, 1.0-ne_perc_completed);
+        overlay(ADK46_mtn, originalPhoto, overlay, 1.0-adk_perc_completed);
+        overlay(NH48_mtn, originalPhoto, overlay, 1.0-nh_perc_completed);
+
+        //Setting text for number displays
+        NE115_number.setText(ne_num_completed + "/115");
+        ADK46_number.setText(adk_num_completed + "/46");
+        NH48_number.setText(nh_num_completed + "/48");
     }
 
-    //Take an imageview, image and percentage, and fill the image with color for the specified percentage,
-    //and then assign the image to the specified imageview
-    public void setOverlay(ImageView image, Bitmap originalBitmap, double percentageCompleted) {
+    public static void overlay(ImageView image, Bitmap base, Bitmap overlay, double percentage) {
+        Bitmap resultBitmap = Bitmap.createBitmap(base.getWidth(), base.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(resultBitmap);
 
-        int height = originalBitmap.getHeight();
-        int percentHeight;
+        Paint paint = new Paint();
 
-        if(percentageCompleted == 0){
-            percentHeight = (int) Math.floor(height);
-        } else {
-            percentHeight = (int) Math.floor(height *  (percentageCompleted));
-            Log.d("PERCENT Completed", Double.toString(percentageCompleted));
-            Log.d("PERCENT HEIGHT", Integer.toString(percentHeight));
-        }
+        // base bitmap
+        canvas.drawBitmap(base, 0F, 0F, paint);
 
-        Bitmap cropped = Bitmap.createBitmap(overlay, 0, 0, overlay.getWidth() , percentHeight );
-        originalBitmap = overlay(originalBitmap, cropped);
-        //set imageview to new bitmap
-        image.setImageBitmap(originalBitmap );
-    }
+        // overlay bitmap
+        int yOffset = (int) (percentage * base.getHeight());
+        Rect rect = new Rect(0, yOffset, overlay.getWidth(), overlay.getHeight());
+        canvas.drawBitmap(overlay, rect, rect, paint);
 
-    public Bitmap overlay(Bitmap bmp1, Bitmap bmp2) {
-        Bitmap bmp3 = bmp1.copy(Bitmap.Config.ARGB_8888,true);//mutable copy
-        Canvas canvas = new Canvas(bmp3 );
-        canvas.drawBitmap(bmp2, new Matrix(), null);
-        return bmp3;
+        image.setImageBitmap(resultBitmap);
     }
 
     //Take the number of peaks hiked, and calculate a percentage based off of each list
