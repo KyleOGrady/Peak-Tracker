@@ -15,7 +15,7 @@
         android:layout_height="500dp"
         android:orientation="vertical"
         android:weightSum="5"
-        android:background="@color/celeryGreen"
+        android:background="@drawable/gradient"
         android:scrollbars="vertical"
         android:scrollbarAlwaysDrawVerticalTrack="true"
         tools:context="kyle.peaktracker.ClaimPeakActivity">
@@ -26,8 +26,8 @@
             android:layout_height="50dp"
             android:text="Claim Peak"
             android:textSize="30sp"
-            android:background="@drawable/claim_background"
-            android:textColor="@color/lightBlue"
+            android:background="@drawable/claim_background_blue"
+            android:textColor="@color/nearWhite"
             android:gravity="center"
             android:layout_weight="1"
             android:layout_gravity="center"/>
@@ -37,14 +37,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:textColor="@color/lightGreen"
+            android:textColor="@color/nearWhite"
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:hint="Enter Comments"
-            android:backgroundTint="@color/lightGreen"
+            android:backgroundTint="@color/nearWhite"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:textColorHint="@color/lightGreen"
+            android:textColorHint="@color/nearWhite"
             android:inputType="textMultiLine" />
 
         <EditText
@@ -52,14 +52,14 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:clickable="true"
-            android:textColor="@color/lightGreen"
-            android:backgroundTint="@color/lightGreen"
+            android:textColor="@color/nearWhite"
+            android:backgroundTint="@color/nearWhite"
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_weight="1"
             android:focusable="false"
-            android:textColorHint="@color/lightGreen"
+            android:textColorHint="@color/nearWhite"
             android:hint="Select Date" />
 
         <ImageButton
@@ -72,15 +72,17 @@
             android:layout_gravity="center"
             android:text="Upload Image" />
 
-        <ImageButton
+        <Button
             android:id="@+id/submitClaim"
             android:layout_width="250dp"
-            android:layout_height="120dp"
+            android:layout_height="100dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/submit_claim"
+            android:background="@drawable/rounded_corners"
             android:layout_marginBottom="10dp"
             android:layout_gravity="center"
             android:text="Submit Claim"
+            android:textSize="30sp"
+            android:textColor="@color/nearWhite"
             android:scaleType="fitXY"/>
 
         <ImageView

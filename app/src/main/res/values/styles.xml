@@ -24,8 +24,8 @@
 
     <style name="datepicker" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorPrimary">@color/lightBlue</item>
-        <item name="colorPrimaryDark">@color/peakBrown</item>
-        <item name="colorAccent">@color/celeryGreen</item>
+        <item name="colorPrimaryDark">@color/peacockBlue</item>
+        <item name="colorAccent">@color/peacockBlue</item>
     </style>
 
     <style name="DialogAnimation">

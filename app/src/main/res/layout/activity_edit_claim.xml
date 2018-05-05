@@ -15,7 +15,7 @@
         android:layout_height="500dp"
         android:orientation="vertical"
         android:weightSum="5"
-        android:background="@color/celeryGreen"
+        android:background="@drawable/gradient"
         android:scrollbars="vertical"
         android:scrollbarAlwaysDrawVerticalTrack="true"
         tools:context="kyle.peaktracker.ClaimPeakActivity">
@@ -25,8 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:textSize="30sp"
-            android:background="@drawable/claim_background"
-            android:textColor="@color/lightBlue"
+            android:background="@drawable/claim_background_blue"
+            android:textColor="@color/nearWhite"
             android:padding="5dp"
             android:gravity="center"
             android:layout_weight="1"
@@ -47,13 +47,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:textColor="@color/lightGreen"
+            android:textColor="@color/nearWhite"
             android:gravity="center"
             android:hint="Enter Comments"
-            android:backgroundTint="@color/lightGreen"
+            android:backgroundTint="@color/nearWhite"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:textColorHint="@color/lightGreen"
+            android:textColorHint="@color/nearWhite"
             android:inputType="textMultiLine" />
 
         <EditText
@@ -61,14 +61,14 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:clickable="true"
-            android:textColor="@color/lightGreen"
-            android:backgroundTint="@color/lightGreen"
+            android:textColor="@color/nearWhite"
+            android:backgroundTint="@color/nearWhite"
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_weight="1"
             android:focusable="false"
-            android:textColorHint="@color/lightGreen"
+            android:textColorHint="@color/nearWhite"
             android:hint="Select Date" />
 
         <ImageButton
@@ -99,7 +99,7 @@
             <Button
                 android:id="@+id/saveChanges"
                 android:layout_width="110dp"
-                android:background="@color/yellowish"
+                android:background="@color/lightestBlue"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
@@ -110,7 +110,7 @@
                 android:id="@+id/cancelChanges"
                 android:layout_width="110dp"
                 android:layout_height="50dp"
-                android:background="@color/lightBlue"
+                android:background="@color/peacockBlue"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:text="Cancel"

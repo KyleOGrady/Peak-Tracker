@@ -77,7 +77,7 @@ public class ClaimPeakActivity extends AppCompatActivity {
 
         //Items on Claim dialog
         TextView claimPeak = findViewById(R.id.claimPeakHeader);
-        ImageButton submitClaim = findViewById(R.id.submitClaim);
+        Button submitClaim = findViewById(R.id.submitClaim);
         ImageButton uploadImage = findViewById(R.id.upload_image);
         final EditText selectDate = findViewById(R.id.selectDate);
         final EditText enterComments = findViewById(R.id.enterComments);
@@ -89,6 +89,7 @@ public class ClaimPeakActivity extends AppCompatActivity {
         claimPeak.setTypeface(cabin_semiBold);
         selectDate.setTypeface(cabin_regular);
         enterComments.setTypeface(cabin_regular);
+        submitClaim.setTypeface(cabin_semiBold);
 
         //Date Picking logic
         final Calendar myCalendar = Calendar.getInstance();
