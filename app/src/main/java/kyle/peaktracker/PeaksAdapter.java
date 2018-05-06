@@ -81,7 +81,7 @@ public class PeaksAdapter extends ArrayAdapter<Peak>{
             if(listViewItemType == CLIMBED){
                 holder.climbedImage = convertView.findViewById(R.id.climbed_image);
                 Bitmap set = BitmapFactory.decodeResource(context.getResources(),
-                    R.drawable.yes);
+                    R.drawable.yes_5);
                 int width = set.getWidth();
                 int height = set.getHeight();
                 Bitmap resized = getResizedBitmap(set, height/10, width/10);
