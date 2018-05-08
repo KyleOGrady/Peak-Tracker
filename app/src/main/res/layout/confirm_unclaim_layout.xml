@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="200dp"
     android:padding="20dp"
-    android:background="@drawable/unclaim_confirm_background">
+    android:background="@drawable/unclaim_confirm_blue">
 
     <TextView
         android:id="@+id/unclaim_header"
@@ -12,7 +12,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:textSize="30dp"
-        android:textColor="@color/yellowish"
+        android:textColor="@color/nearWhite"
         android:layout_marginBottom="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -28,7 +28,7 @@
             android:id="@+id/confirm_unclaim"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:background="@color/yellowish"
+            android:background="@color/lightestBlue"
             android:textSize="20dp"
             android:textColor="@color/unclaimedRed"
             android:text="Yes"/>
@@ -37,9 +37,9 @@
             android:id="@+id/cancel_unclaim"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:background="@color/lightBlue"
+            android:background="#4c9bc4"
             android:textSize="20dp"
-            android:textColor="@color/nearBlack"
+            android:textColor="@color/nearWhite"
             android:text="No" />
 
     </LinearLayout>

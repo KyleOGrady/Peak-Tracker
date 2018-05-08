@@ -22,11 +22,11 @@
         android:id="@+id/peak_claimPeak"
         android:layout_gravity="center"
         android:focusable="false"
-        android:background="@drawable/claim_plus_lb"
+        android:background="@drawable/claim_cross"
         android:focusableInTouchMode="false"
-        android:layout_marginRight="10dp"
-        android:layout_width="73dp"
-        android:layout_height="50dp"
+        android:layout_marginRight="19dp"
+        android:layout_width="48dp"
+        android:layout_height="30dp"
         android:layout_weight="1"/>
 
     <!--<Button-->
