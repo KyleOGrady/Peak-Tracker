@@ -67,6 +67,7 @@ public class ClaimPeakActivity extends AppCompatActivity {
         //Get peakname and table from PeaksAdapter
         Bundle bundle = getIntent().getExtras();
         final String peakName = bundle.getString("PEAK NAME");
+        Log.d("PEEEAAAAK NAME", peakName);
         final String tableName = bundle.getString("TABLE NAME");
 
         //Items on Claim dialog
@@ -134,7 +135,7 @@ public class ClaimPeakActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(selectDate.getText().toString().equals("") || enterComments.getText().toString().equals("") || shareImage == null){
+                if(selectDate.getText().toString().equals("") || enterComments.getText().toString().equals("") /*|| shareImage == null*/){
                     Toast.makeText(getBaseContext(), "Make sure you've entered comments, entered a date, and uploaded an image.", Toast.LENGTH_LONG).show();
                 } else{
                     String date = selectDate.getText().toString();

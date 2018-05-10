@@ -181,18 +181,30 @@ public class DatabaseAccess {
 
         insert_image(tableName, peakName, image);
 
-        String query = "UPDATE " + tableName + " SET _climbed = 'Y', _date = '" + date +
-                       "', _comments = '" + comments + "' WHERE _name = '" + peakName + "';";
+//        String query = "UPDATE " + tableName + " SET _climbed = 'Y', _date = '" + date +
+//                       "', _comments = '" + comments + "' WHERE _name = '" + peakName + "';";
 
-        database.execSQL(query);
+        ContentValues cv = new ContentValues();
+        cv.put("_climbed", "Y");
+        cv.put("_date", date);
+        cv.put("_comments", comments);
+        String[] whereArgs = new String[] {String.valueOf(peakName)};
+        database.update(tableName, cv, "_name=?", whereArgs);
     }
 
     public void claimPeak(String peakName, String date, String comments, String tableName){
 
-        String query = "UPDATE " + tableName + " SET _climbed = 'Y', _date = '" + date +
-                "', _comments = '" + comments + "' WHERE _name = '" + peakName + "';";
+//        String query = "UPDATE " + tableName + " SET _climbed = 'Y', _date = '" + date +
+//                "', _comments = '" + comments + "' WHERE _name = '" + peakName + "';";
 
-        database.execSQL(query);
+        ContentValues cv = new ContentValues();
+        cv.put("_climbed", "Y");
+        cv.put("_date", date);
+        cv.put("_comments", comments);
+        String[] whereArgs = new String[] {String.valueOf(peakName)};
+        database.update(tableName, cv, "_name=?", whereArgs);
+
+        //database.execSQL(query);
     }
 
     //Used in the claimPeak function, to insert an image into the database
