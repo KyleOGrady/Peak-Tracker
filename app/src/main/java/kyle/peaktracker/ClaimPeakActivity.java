@@ -135,7 +135,7 @@ public class ClaimPeakActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(selectDate.getText().toString().equals("") || enterComments.getText().toString().equals("") /*|| shareImage == null*/){
+                if(selectDate.getText().toString().equals("") || enterComments.getText().toString().equals("") || shareImage == null){
                     Toast.makeText(getBaseContext(), "Make sure you've entered comments, entered a date, and uploaded an image.", Toast.LENGTH_LONG).show();
                 } else{
                     String date = selectDate.getText().toString();
@@ -214,41 +214,50 @@ public class ClaimPeakActivity extends AppCompatActivity {
                         return;
                     }
 
-                    final Uri imageUri = data.getData();
-                    final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                    selectedImage = BitmapFactory.decodeStream(imageStream);
-                    int width = selectedImage.getWidth();
-                    int height = selectedImage.getHeight();
-
-                    Log.d("IMAGE WIDTH", Integer.toString(width));
-                    Log.d("IMAGE HEIGHT", Integer.toString(height));
-                    Matrix matrix = new Matrix();
-
-                    File file= new File(getPath(getApplicationContext(), imageUri));
-                    int orientation = 0;
-                    ExifInterface exif = null;
                     try {
-                        exif = new ExifInterface(file.getAbsolutePath());
-                        orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-                        Log.d("ORIENTATION", Integer.toString(orientation));
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
 
-                    if(orientation == 6){
-                        matrix.setRotate(90);
-                        shareImage = Bitmap.createBitmap(selectedImage, 0, 0, width, height, matrix, false);
-                    } else {
-                        shareImage = selectedImage;
-                    }
+                        final Uri imageUri = data.getData();
+                        final InputStream imageStream = getContentResolver().openInputStream(imageUri);
 
-                    selectedImageScaled = getResizedBitmap(selectedImage, height / 5, width / 5, matrix);
+                        selectedImage = BitmapFactory.decodeStream(imageStream);
 
-                    imageSaved = getBitmapAsByteArray(selectedImageScaled);
+                        //selectedImage = BitmapFactory.decodeStream(imageStream);
+                        int width = selectedImage.getWidth();
+                        int height = selectedImage.getHeight();
 
-                    uploadedPicView.setVisibility(View.VISIBLE);
-                    uploadedPicView.setImageBitmap(selectedImageScaled);
+                        Log.d("IMAGE WIDTH", Integer.toString(width));
+                        Log.d("IMAGE HEIGHT", Integer.toString(height));
+                        Matrix matrix = new Matrix();
+
+                        File file = new File(getPath(getApplicationContext(), imageUri));
+                        int orientation = 0;
+                        ExifInterface exif = null;
+                        try {
+                            exif = new ExifInterface(file.getAbsolutePath());
+                            orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                            Log.d("ORIENTATION", Integer.toString(orientation));
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (orientation == 6) {
+                            matrix.setRotate(90);
+                            shareImage = Bitmap.createBitmap(selectedImage, 0, 0, width, height, matrix, false);
+                        } else {
+                            shareImage = selectedImage;
+                        }
+
+                        selectedImageScaled = getResizedBitmap(selectedImage, height / 5, width / 5, matrix);
+
+                        imageSaved = getBitmapAsByteArray(selectedImageScaled);
+
+                        uploadedPicView.setVisibility(View.VISIBLE);
+                        uploadedPicView.setImageBitmap(selectedImageScaled);
+                    } catch(OutOfMemoryError error){
+                    Toast.makeText(getBaseContext(), "Something went wrong, please try again.", Toast.LENGTH_LONG).show();
+                }
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                     Toast.makeText(getBaseContext(), "Something went wrong", Toast.LENGTH_LONG).show();
